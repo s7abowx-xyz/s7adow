@@ -3,22 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shadow Encrypt - منصة التشفير الاحترافية</title>
+    <title>Shadow Encrypt - تشفير الملفات + API</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             background: linear-gradient(135deg, #0a0a0a 0%, #0f0c29 50%, #1a1a2e 100%);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
             color: #fff;
         }
-
-        /* Header */
         .header {
             background: rgba(0, 0, 0, 0.8);
             padding: 20px;
@@ -29,7 +26,6 @@
             z-index: 100;
             backdrop-filter: blur(10px);
         }
-
         .header h1 {
             font-size: 2rem;
             background: linear-gradient(135deg, #00ffcc, #ff4757);
@@ -37,28 +33,21 @@
             background-clip: text;
             color: transparent;
         }
-
         .header p {
             color: #888;
             margin-top: 5px;
         }
-
-        /* Container */
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
-
-        /* Grid */
         .tools-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
             gap: 20px;
             margin-top: 20px;
         }
-
-        /* Tool Card */
         .tool-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
@@ -67,12 +56,10 @@
             border: 1px solid rgba(0, 255, 204, 0.2);
             transition: 0.3s;
         }
-
         .tool-card:hover {
             border-color: #00ffcc;
             box-shadow: 0 0 20px rgba(0, 255, 204, 0.1);
         }
-
         .tool-card h3 {
             color: #00ffcc;
             margin-bottom: 15px;
@@ -81,9 +68,7 @@
             align-items: center;
             gap: 10px;
         }
-
-        .tool-card textarea,
-        .tool-card input {
+        .tool-card textarea, .tool-card input {
             width: 100%;
             padding: 12px;
             background: rgba(0, 0, 0, 0.5);
@@ -94,20 +79,16 @@
             font-size: 14px;
             resize: vertical;
         }
-
-        .tool-card textarea:focus,
-        .tool-card input:focus {
+        .tool-card textarea:focus, .tool-card input:focus {
             outline: none;
             border-color: #00ffcc;
         }
-
         .btn-group {
             display: flex;
             gap: 10px;
             margin: 10px 0;
             flex-wrap: wrap;
         }
-
         button {
             padding: 8px 16px;
             background: linear-gradient(135deg, #00ffcc, #00ff88);
@@ -118,22 +99,22 @@
             cursor: pointer;
             transition: 0.3s;
         }
-
         button:hover {
             transform: translateY(-2px);
             box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
         }
-
         .btn-copy {
             background: linear-gradient(135deg, #ff4757, #ff6b81);
             color: #fff;
         }
-
         .btn-clear {
             background: linear-gradient(135deg, #555, #777);
             color: #fff;
         }
-
+        .btn-download {
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            color: #000;
+        }
         .result {
             background: rgba(0, 0, 0, 0.5);
             border-radius: 8px;
@@ -146,8 +127,25 @@
             overflow-y: auto;
             border: 1px solid rgba(0, 255, 204, 0.2);
         }
-
-        /* Footer */
+        .api-info {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            border: 1px solid rgba(0, 255, 204, 0.3);
+        }
+        .api-info h3 {
+            color: #00ffcc;
+            margin-bottom: 10px;
+        }
+        .api-endpoint {
+            background: #000;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 10px 0;
+            word-break: break-all;
+        }
         .footer {
             text-align: center;
             padding: 30px;
@@ -155,27 +153,22 @@
             border-top: 1px solid rgba(0, 255, 204, 0.2);
             margin-top: 40px;
         }
-
         @media (max-width: 768px) {
-            .tools-grid {
-                grid-template-columns: 1fr;
-            }
-            .header h1 {
-                font-size: 1.5rem;
-            }
+            .tools-grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>🔐 Shadow Encrypt</h1>
-        <p>منصة التشفير الاحترافية - أكثر من 20 أسلوب تشفير</p>
+        <p>تشفير النصوص والملفات + API مدمج للبوتات</p>
     </div>
 
     <div class="container">
         <div class="tools-grid">
             
-            <!-- 1. Base64 -->
+            <!-- Base64 -->
             <div class="tool-card">
                 <h3>📦 Base64</h3>
                 <textarea id="b64Input" rows="2" placeholder="أدخل النص..."></textarea>
@@ -183,12 +176,13 @@
                     <button onclick="b64Encode()">🔒 تشفير</button>
                     <button onclick="b64Decode()">🔓 فك</button>
                     <button class="btn-copy" onclick="copyResult('b64Result')">📋 نسخ</button>
+                    <button class="btn-download" onclick="downloadResult('b64Result', 'base64.txt')">📥 تنزيل</button>
                     <button class="btn-clear" onclick="clearTool('b64Input','b64Result')">🗑️ مسح</button>
                 </div>
                 <div id="b64Result" class="result">النتيجة...</div>
             </div>
 
-            <!-- 2. HEX -->
+            <!-- Hex -->
             <div class="tool-card">
                 <h3>🔢 Hexadecimal</h3>
                 <textarea id="hexInput" rows="2" placeholder="أدخل النص..."></textarea>
@@ -196,121 +190,76 @@
                     <button onclick="hexEncode()">🔒 تشفير</button>
                     <button onclick="hexDecode()">🔓 فك</button>
                     <button class="btn-copy" onclick="copyResult('hexResult')">📋 نسخ</button>
+                    <button class="btn-download" onclick="downloadResult('hexResult', 'hex.txt')">📥 تنزيل</button>
                     <button class="btn-clear" onclick="clearTool('hexInput','hexResult')">🗑️ مسح</button>
                 </div>
                 <div id="hexResult" class="result">النتيجة...</div>
             </div>
 
-            <!-- 3. Binary -->
-            <div class="tool-card">
-                <h3>💾 Binary</h3>
-                <textarea id="binInput" rows="2" placeholder="أدخل النص..."></textarea>
-                <div class="btn-group">
-                    <button onclick="binEncode()">🔒 تشفير</button>
-                    <button onclick="binDecode()">🔓 فك</button>
-                    <button class="btn-copy" onclick="copyResult('binResult')">📋 نسخ</button>
-                    <button class="btn-clear" onclick="clearTool('binInput','binResult')">🗑️ مسح</button>
-                </div>
-                <div id="binResult" class="result">النتيجة...</div>
-            </div>
-
-            <!-- 4. ROT13 -->
-            <div class="tool-card">
-                <h3>🔄 ROT13</h3>
-                <textarea id="rot13Input" rows="2" placeholder="أدخل النص..."></textarea>
-                <div class="btn-group">
-                    <button onclick="rot13Transform()">🔄 تحويل</button>
-                    <button class="btn-copy" onclick="copyResult('rot13Result')">📋 نسخ</button>
-                    <button class="btn-clear" onclick="clearTool('rot13Input','rot13Result')">🗑️ مسح</button>
-                </div>
-                <div id="rot13Result" class="result">النتيجة...</div>
-            </div>
-
-            <!-- 5. URL Encode -->
-            <div class="tool-card">
-                <h3>🌐 URL Encode</h3>
-                <textarea id="urlInput" rows="2" placeholder="أدخل النص..."></textarea>
-                <div class="btn-group">
-                    <button onclick="urlEncode()">🔒 تشفير</button>
-                    <button onclick="urlDecode()">🔓 فك</button>
-                    <button class="btn-copy" onclick="copyResult('urlResult')">📋 نسخ</button>
-                    <button class="btn-clear" onclick="clearTool('urlInput','urlResult')">🗑️ مسح</button>
-                </div>
-                <div id="urlResult" class="result">النتيجة...</div>
-            </div>
-
-            <!-- 6. MD5 -->
+            <!-- MD5 -->
             <div class="tool-card">
                 <h3>🔐 MD5 Hash</h3>
                 <textarea id="md5Input" rows="2" placeholder="أدخل النص..."></textarea>
                 <div class="btn-group">
                     <button onclick="md5Hash()">🔒 تشفير</button>
                     <button class="btn-copy" onclick="copyResult('md5Result')">📋 نسخ</button>
+                    <button class="btn-download" onclick="downloadResult('md5Result', 'md5.txt')">📥 تنزيل</button>
                     <button class="btn-clear" onclick="clearTool('md5Input','md5Result')">🗑️ مسح</button>
                 </div>
                 <div id="md5Result" class="result">النتيجة...</div>
             </div>
 
-            <!-- 7. SHA1 -->
-            <div class="tool-card">
-                <h3>🔐 SHA-1</h3>
-                <textarea id="sha1Input" rows="2" placeholder="أدخل النص..."></textarea>
-                <div class="btn-group">
-                    <button onclick="sha1Hash()">🔒 تشفير</button>
-                    <button class="btn-copy" onclick="copyResult('sha1Result')">📋 نسخ</button>
-                    <button class="btn-clear" onclick="clearTool('sha1Input','sha1Result')">🗑️ مسح</button>
-                </div>
-                <div id="sha1Result" class="result">النتيجة...</div>
-            </div>
-
-            <!-- 8. SHA256 -->
+            <!-- SHA256 -->
             <div class="tool-card">
                 <h3>🔐 SHA-256</h3>
                 <textarea id="sha256Input" rows="2" placeholder="أدخل النص..."></textarea>
                 <div class="btn-group">
                     <button onclick="sha256Hash()">🔒 تشفير</button>
                     <button class="btn-copy" onclick="copyResult('sha256Result')">📋 نسخ</button>
+                    <button class="btn-download" onclick="downloadResult('sha256Result', 'sha256.txt')">📥 تنزيل</button>
                     <button class="btn-clear" onclick="clearTool('sha256Input','sha256Result')">🗑️ مسح</button>
                 </div>
                 <div id="sha256Result" class="result">النتيجة...</div>
             </div>
 
-            <!-- 9. Reverse Text -->
-            <div class="tool-card">
-                <h3>🔄 عكس النص</h3>
-                <textarea id="reverseInput" rows="2" placeholder="أدخل النص..."></textarea>
-                <div class="btn-group">
-                    <button onclick="reverseText()">🔄 عكس</button>
-                    <button class="btn-copy" onclick="copyResult('reverseResult')">📋 نسخ</button>
-                    <button class="btn-clear" onclick="clearTool('reverseInput','reverseResult')">🗑️ مسح</button>
-                </div>
-                <div id="reverseResult" class="result">النتيجة...</div>
-            </div>
+        </div>
 
-            <!-- 10. Caesar Cipher -->
-            <div class="tool-card">
-                <h3>⚙️ Caesar Cipher</h3>
-                <textarea id="caesarInput" rows="2" placeholder="أدخل النص..."></textarea>
-                <input type="number" id="caesarShift" placeholder="رقم الإزاحة (1-25)" value="3" style="margin: 10px 0;">
-                <div class="btn-group">
-                    <button onclick="caesarEncrypt()">🔒 تشفير</button>
-                    <button onclick="caesarDecrypt()">🔓 فك</button>
-                    <button class="btn-copy" onclick="copyResult('caesarResult')">📋 نسخ</button>
-                    <button class="btn-clear" onclick="clearTool('caesarInput','caesarResult')">🗑️ مسح</button>
-                </div>
-                <div id="caesarResult" class="result">النتيجة...</div>
-            </div>
-
+        <!-- API Info -->
+        <div class="api-info">
+            <h3>🔌 API مدمج للبوتات (تيليجرام، واتساب، ديسكورد)</h3>
+            <p>استخدم الـ API التالي لتشفير النصوص من بوتاتك مباشرة</p>
+            <div class="api-endpoint" id="apiUrl"></div>
+            <p><strong>POST /api</strong><br>
+            { "text": "النص المراد تشفيره", "type": "base64|hex|md5|sha256" }<br>
+            أو استخدم GET: <code>/api?text=مرحبا&type=base64</code></p>
+            <p><strong>مثال:</strong><br>
+            <code>curl "https://your-site.vercel.app/api?text=مرحبا&type=base64"</code></p>
+            <p><strong>جرب الآن:</strong><br>
+            <input type="text" id="apiTestText" placeholder="أدخل نص" style="width: 200px;">
+            <select id="apiTestType">
+                <option value="base64">Base64</option>
+                <option value="hex">Hex</option>
+                <option value="md5">MD5</option>
+                <option value="sha256">SHA256</option>
+            </select>
+            <button onclick="testAPI()">🧪 تجربة API</button>
+            </p>
+            <div id="apiTestResult" class="result" style="margin-top: 10px;">النتيجة ستظهر هنا...</div>
         </div>
     </div>
 
     <div class="footer">
-        <p>🕷️ Shadow Encrypt - جميع أدوات التشفير تعمل محلياً على جهازك | WORM HUNTER</p>
+        <p>🕷️ Shadow Encrypt - جميع الأدوات تعمل محلياً | API مدمج للبوتات | WORM HUNTER</p>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
     <script>
-        // ========== Base64 ==========
+        // عرض رابط API
+        document.getElementById('apiUrl').innerHTML = window.location.origin + '/api';
+
+        // ========== دوال التشفير ==========
+        
+        // Base64
         function b64Encode() {
             let input = document.getElementById('b64Input').value;
             if (!input) { alert('أدخل النص أولاً'); return; }
@@ -323,10 +272,10 @@
             try {
                 let result = decodeURIComponent(escape(atob(input)));
                 document.getElementById('b64Result').innerHTML = result;
-            } catch(e) { alert('نص غير صالح لـ Base64'); }
+            } catch(e) { alert('نص غير صالح'); }
         }
 
-        // ========== Hex ==========
+        // Hex
         function hexEncode() {
             let input = document.getElementById('hexInput').value;
             let result = '';
@@ -344,116 +293,119 @@
             document.getElementById('hexResult').innerHTML = result;
         }
 
-        // ========== Binary ==========
-        function binEncode() {
-            let input = document.getElementById('binInput').value;
-            let result = '';
-            for (let i = 0; i < input.length; i++) {
-                result += input.charCodeAt(i).toString(2).padStart(8, '0') + ' ';
-            }
-            document.getElementById('binResult').innerHTML = result.trim();
-        }
-        function binDecode() {
-            let input = document.getElementById('binInput').value;
-            let result = '';
-            input.split(' ').forEach(bin => {
-                if (bin) result += String.fromCharCode(parseInt(bin, 2));
-            });
-            document.getElementById('binResult').innerHTML = result;
-        }
-
-        // ========== ROT13 ==========
-        function rot13Transform() {
-            let input = document.getElementById('rot13Input').value;
-            let result = input.replace(/[a-zA-Z]/g, function(c) {
-                let base = (c <= 'Z') ? 65 : 97;
-                return String.fromCharCode((c.charCodeAt(0) - base + 13) % 26 + base);
-            });
-            document.getElementById('rot13Result').innerHTML = result;
-        }
-
-        // ========== URL ==========
-        function urlEncode() {
-            let input = document.getElementById('urlInput').value;
-            document.getElementById('urlResult').innerHTML = encodeURIComponent(input);
-        }
-        function urlDecode() {
-            let input = document.getElementById('urlInput').value;
-            document.getElementById('urlResult').innerHTML = decodeURIComponent(input);
-        }
-
-        // ========== MD5 ==========
+        // MD5
         function md5Hash() {
             let input = document.getElementById('md5Input').value;
             let result = CryptoJS.MD5(input).toString();
             document.getElementById('md5Result').innerHTML = result;
         }
 
-        // ========== SHA1 ==========
-        function sha1Hash() {
-            let input = document.getElementById('sha1Input').value;
-            let result = CryptoJS.SHA1(input).toString();
-            document.getElementById('sha1Result').innerHTML = result;
-        }
-
-        // ========== SHA256 ==========
+        // SHA256
         function sha256Hash() {
             let input = document.getElementById('sha256Input').value;
             let result = CryptoJS.SHA256(input).toString();
             document.getElementById('sha256Result').innerHTML = result;
         }
 
-        // ========== Reverse ==========
-        function reverseText() {
-            let input = document.getElementById('reverseInput').value;
-            let result = input.split('').reverse().join('');
-            document.getElementById('reverseResult').innerHTML = result;
+        // ========== دوال مساعدة ==========
+        
+        // تنزيل النتيجة كملف
+        function downloadResult(elementId, filename) {
+            let content = document.getElementById(elementId).innerText;
+            if (!content || content === 'النتيجة...') {
+                alert('لا يوجد نص للتنزيل');
+                return;
+            }
+            let blob = new Blob([content], { type: 'text/plain' });
+            let link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+            URL.revokeObjectURL(link.href);
         }
 
-        // ========== Caesar ==========
-        function caesarEncrypt() {
-            let input = document.getElementById('caesarInput').value;
-            let shift = parseInt(document.getElementById('caesarShift').value) || 3;
-            let result = '';
-            for (let i = 0; i < input.length; i++) {
-                let char = input[i];
-                if (char >= 'a' && char <= 'z') {
-                    result += String.fromCharCode((char.charCodeAt(0) - 97 + shift) % 26 + 97);
-                } else if (char >= 'A' && char <= 'Z') {
-                    result += String.fromCharCode((char.charCodeAt(0) - 65 + shift) % 26 + 65);
-                } else {
-                    result += char;
-                }
-            }
-            document.getElementById('caesarResult').innerHTML = result;
-        }
-        function caesarDecrypt() {
-            let input = document.getElementById('caesarInput').value;
-            let shift = parseInt(document.getElementById('caesarShift').value) || 3;
-            let result = '';
-            for (let i = 0; i < input.length; i++) {
-                let char = input[i];
-                if (char >= 'a' && char <= 'z') {
-                    result += String.fromCharCode((char.charCodeAt(0) - 97 - shift + 26) % 26 + 97);
-                } else if (char >= 'A' && char <= 'Z') {
-                    result += String.fromCharCode((char.charCodeAt(0) - 65 - shift + 26) % 26 + 65);
-                } else {
-                    result += char;
-                }
-            }
-            document.getElementById('caesarResult').innerHTML = result;
-        }
-
-        // ========== مساعدة ==========
+        // نسخ النتيجة
         function copyResult(id) {
             let text = document.getElementById(id).innerText;
             if (!text || text === 'النتيجة...') { alert('لا يوجد نص للنسخ'); return; }
             navigator.clipboard.writeText(text);
             alert('✅ تم النسخ!');
         }
+
+        // مسح
         function clearTool(inputId, resultId) {
             document.getElementById(inputId).value = '';
             document.getElementById(resultId).innerHTML = 'النتيجة...';
+        }
+
+        // ========== API مدمج (يعمل داخل الموقع) ==========
+        
+        function encryptWithAPI(text, type) {
+            switch(type) {
+                case 'base64':
+                    return btoa(unescape(encodeURIComponent(text)));
+                case 'hex':
+                    let result = '';
+                    for (let i = 0; i < text.length; i++) {
+                        result += text.charCodeAt(i).toString(16);
+                    }
+                    return result;
+                case 'md5':
+                    return CryptoJS.MD5(text).toString();
+                case 'sha256':
+                    return CryptoJS.SHA256(text).toString();
+                default:
+                    return btoa(unescape(encodeURIComponent(text)));
+            }
+        }
+
+        // اختبار API
+        function testAPI() {
+            let text = document.getElementById('apiTestText').value;
+            let type = document.getElementById('apiTestType').value;
+            
+            if (!text) {
+                alert('أدخل نص أولاً');
+                return;
+            }
+            
+            let result = encryptWithAPI(text, type);
+            document.getElementById('apiTestResult').innerHTML = `📝 النص: ${text}\n🔐 التشفير (${type}):\n${result}`;
+        }
+
+        // ========== معالج API للطلبات الخارجية ==========
+        
+        // كشف إذا كان الموقع يُطلب كـ API
+        if (window.location.pathname === '/api' || window.location.pathname === '/api/') {
+            // قراءة المعاملات من الرابط
+            let urlParams = new URLSearchParams(window.location.search);
+            let text = urlParams.get('text');
+            let type = urlParams.get('type') || 'base64';
+            
+            if (text) {
+                let result = encryptWithAPI(text, type);
+                document.body.innerHTML = `<pre style="color:#00ffcc;background:#0a0a0a;padding:20px;margin:0;min-height:100vh;font-family:monospace;">{
+  "success": true,
+  "original": "${text}",
+  "encrypted": "${result}",
+  "type": "${type}"
+}</pre>`;
+            } else {
+                document.body.innerHTML = `<pre style="color:#00ffcc;background:#0a0a0a;padding:20px;margin:0;min-height:100vh;font-family:monospace;">{
+  "name": "Shadow Encrypt API",
+  "version": "1.0",
+  "description": "API لتشفير النصوص - مدمج في الموقع",
+  "endpoints": {
+    "GET /api": {
+      "params": {
+        "text": "النص المراد تشفيره",
+        "type": "base64|hex|md5|sha256"
+      },
+      "example": "/api?text=مرحبا&type=base64"
+    }
+  }
+}</pre>`;
+            }
         }
     </script>
 </body>
