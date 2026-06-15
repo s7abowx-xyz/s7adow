@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shadow Encrypt - تشفير الملفات + API</title>
+    <title>Shadow Encrypt - تشفير احترافي + Obfuscator</title>
     <style>
         * {
             margin: 0;
@@ -123,7 +123,7 @@
             font-family: monospace;
             font-size: 12px;
             word-break: break-all;
-            max-height: 150px;
+            max-height: 200px;
             overflow-y: auto;
             border: 1px solid rgba(0, 255, 204, 0.2);
         }
@@ -161,14 +161,14 @@
 </head>
 <body>
     <div class="header">
-        <h1>🔐 Shadow Encrypt</h1>
-        <p>تشفير النصوص والملفات + API مدمج للبوتات</p>
+        <h1>🔐 Shadow Encrypt Pro</h1>
+        <p>تشفير النصوص + Obfuscator (تشفير مثل الكود المحمي) + API للبوتات</p>
     </div>
 
     <div class="container">
         <div class="tools-grid">
             
-            <!-- Base64 -->
+            <!-- 1. Base64 -->
             <div class="tool-card">
                 <h3>📦 Base64</h3>
                 <textarea id="b64Input" rows="2" placeholder="أدخل النص..."></textarea>
@@ -182,7 +182,7 @@
                 <div id="b64Result" class="result">النتيجة...</div>
             </div>
 
-            <!-- Hex -->
+            <!-- 2. Hex -->
             <div class="tool-card">
                 <h3>🔢 Hexadecimal</h3>
                 <textarea id="hexInput" rows="2" placeholder="أدخل النص..."></textarea>
@@ -196,7 +196,7 @@
                 <div id="hexResult" class="result">النتيجة...</div>
             </div>
 
-            <!-- MD5 -->
+            <!-- 3. MD5 -->
             <div class="tool-card">
                 <h3>🔐 MD5 Hash</h3>
                 <textarea id="md5Input" rows="2" placeholder="أدخل النص..."></textarea>
@@ -209,7 +209,7 @@
                 <div id="md5Result" class="result">النتيجة...</div>
             </div>
 
-            <!-- SHA256 -->
+            <!-- 4. SHA256 -->
             <div class="tool-card">
                 <h3>🔐 SHA-256</h3>
                 <textarea id="sha256Input" rows="2" placeholder="أدخل النص..."></textarea>
@@ -222,16 +222,40 @@
                 <div id="sha256Result" class="result">النتيجة...</div>
             </div>
 
+            <!-- 5. OBFUSCATOR (جديد) -->
+            <div class="tool-card">
+                <h3>🕷️ Obfuscator (تشويش الكود)</h3>
+                <textarea id="obfuscateInput" rows="3" placeholder="أدخل الكود أو النص لتشويشه..."></textarea>
+                <div class="btn-group">
+                    <button onclick="obfuscateCode()">🕷️ تشويش الكود</button>
+                    <button class="btn-copy" onclick="copyResult('obfuscateResult')">📋 نسخ</button>
+                    <button class="btn-download" onclick="downloadResult('obfuscateResult', 'obfuscated.js')">📥 تنزيل</button>
+                    <button class="btn-clear" onclick="clearTool('obfuscateInput','obfuscateResult')">🗑️ مسح</button>
+                </div>
+                <div id="obfuscateResult" class="result">النتيجة...</div>
+            </div>
+
+            <!-- 6. Reverse Text -->
+            <div class="tool-card">
+                <h3>🔄 عكس النص</h3>
+                <textarea id="reverseInput" rows="2" placeholder="أدخل النص..."></textarea>
+                <div class="btn-group">
+                    <button onclick="reverseText()">🔄 عكس</button>
+                    <button class="btn-copy" onclick="copyResult('reverseResult')">📋 نسخ</button>
+                    <button class="btn-download" onclick="downloadResult('reverseResult', 'reverse.txt')">📥 تنزيل</button>
+                    <button class="btn-clear" onclick="clearTool('reverseInput','reverseResult')">🗑️ مسح</button>
+                </div>
+                <div id="reverseResult" class="result">النتيجة...</div>
+            </div>
+
         </div>
 
         <!-- API Info -->
         <div class="api-info">
-            <h3>🔌 API مدمج للبوتات (تيليجرام، واتساب، ديسكورد)</h3>
-            <p>استخدم الـ API التالي لتشفير النصوص من بوتاتك مباشرة</p>
+            <h3>🔌 API مدمج للبوتات</h3>
+            <p>استخدم الـ API لتشفير النصوص من بوتاتك مباشرة</p>
             <div class="api-endpoint" id="apiUrl"></div>
-            <p><strong>POST /api</strong><br>
-            { "text": "النص المراد تشفيره", "type": "base64|hex|md5|sha256" }<br>
-            أو استخدم GET: <code>/api?text=مرحبا&type=base64</code></p>
+            <p><strong>GET /api?text=نص&type=base64|hex|md5|sha256|obfuscate</strong></p>
             <p><strong>مثال:</strong><br>
             <code>curl "https://your-site.vercel.app/api?text=مرحبا&type=base64"</code></p>
             <p><strong>جرب الآن:</strong><br>
@@ -241,6 +265,7 @@
                 <option value="hex">Hex</option>
                 <option value="md5">MD5</option>
                 <option value="sha256">SHA256</option>
+                <option value="obfuscate">Obfuscator</option>
             </select>
             <button onclick="testAPI()">🧪 تجربة API</button>
             </p>
@@ -249,7 +274,7 @@
     </div>
 
     <div class="footer">
-        <p>🕷️ Shadow Encrypt - جميع الأدوات تعمل محلياً | API مدمج للبوتات | WORM HUNTER</p>
+        <p>🕷️ Shadow Encrypt Pro - تشفير النصوص + Obfuscator + API للبوتات | WORM HUNTER</p>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
@@ -257,7 +282,7 @@
         // عرض رابط API
         document.getElementById('apiUrl').innerHTML = window.location.origin + '/api';
 
-        // ========== دوال التشفير ==========
+        // ========== دوال التشفير الأساسية ==========
         
         // Base64
         function b64Encode() {
@@ -307,9 +332,63 @@
             document.getElementById('sha256Result').innerHTML = result;
         }
 
+        // عكس النص
+        function reverseText() {
+            let input = document.getElementById('reverseInput').value;
+            let result = input.split('').reverse().join('');
+            document.getElementById('reverseResult').innerHTML = result;
+        }
+
+        // ========== OBFUSCATOR (تشويش الكود مثل الكود اللي أرسلته) ==========
+        
+        function obfuscateCode() {
+            let input = document.getElementById('obfuscateInput').value;
+            if (!input) { alert('أدخل الكود أو النص أولاً'); return; }
+            
+            let result = obfuscateJavaScript(input);
+            document.getElementById('obfuscateResult').innerHTML = result;
+        }
+
+        function obfuscateJavaScript(code) {
+            // 1. تحويل إلى Base64
+            let base64 = btoa(unescape(encodeURIComponent(code)));
+            
+            // 2. إنشاء دوال متعرجة (مثل الكود اللي أرسلته)
+            let randomFuncName = '_0x' + Math.random().toString(36).substring(2, 8) + Math.random().toString(36).substring(2, 6);
+            let randomVarName = '_0x' + Math.random().toString(36).substring(2, 8);
+            
+            // 3. بناء الكود المشوش
+            let obfuscated = `(function(){
+const ${randomVarName} = atob("${base64}");
+const ${randomFuncName} = new Function(${randomVarName});
+return ${randomFuncName}();
+})();`;
+            
+            // 4. إضافة طبقات إضافية من التشويش
+            for (let i = 0; i < 2; i++) {
+                let innerBase64 = btoa(unescape(encodeURIComponent(obfuscated)));
+                obfuscated = `(function(){
+const _0x${Math.random().toString(36).substring(2, 10)} = atob("${innerBase64}");
+const _0x${Math.random().toString(36).substring(2, 10)} = new Function(_0x${Math.random().toString(36).substring(2, 10)});
+return _0x${Math.random().toString(36).substring(2, 10)}();
+})();`;
+            }
+            
+            return obfuscated;
+        }
+
+        // تشويش بسيط للنصوص العادية (وليس كود)
+        function simpleObfuscate(text) {
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                let charCode = text.charCodeAt(i);
+                result += '\\u' + charCode.toString(16).padStart(4, '0');
+            }
+            return result;
+        }
+
         // ========== دوال مساعدة ==========
         
-        // تنزيل النتيجة كملف
         function downloadResult(elementId, filename) {
             let content = document.getElementById(elementId).innerText;
             if (!content || content === 'النتيجة...') {
@@ -324,7 +403,6 @@
             URL.revokeObjectURL(link.href);
         }
 
-        // نسخ النتيجة
         function copyResult(id) {
             let text = document.getElementById(id).innerText;
             if (!text || text === 'النتيجة...') { alert('لا يوجد نص للنسخ'); return; }
@@ -332,13 +410,12 @@
             alert('✅ تم النسخ!');
         }
 
-        // مسح
         function clearTool(inputId, resultId) {
             document.getElementById(inputId).value = '';
             document.getElementById(resultId).innerHTML = 'النتيجة...';
         }
 
-        // ========== API مدمج (يعمل داخل الموقع) ==========
+        // ========== API مدمج ==========
         
         function encryptWithAPI(text, type) {
             switch(type) {
@@ -354,12 +431,13 @@
                     return CryptoJS.MD5(text).toString();
                 case 'sha256':
                     return CryptoJS.SHA256(text).toString();
+                case 'obfuscate':
+                    return obfuscateJavaScript(text);
                 default:
                     return btoa(unescape(encodeURIComponent(text)));
             }
         }
 
-        // اختبار API
         function testAPI() {
             let text = document.getElementById('apiTestText').value;
             let type = document.getElementById('apiTestType').value;
@@ -375,9 +453,7 @@
 
         // ========== معالج API للطلبات الخارجية ==========
         
-        // كشف إذا كان الموقع يُطلب كـ API
         if (window.location.pathname === '/api' || window.location.pathname === '/api/') {
-            // قراءة المعاملات من الرابط
             let urlParams = new URLSearchParams(window.location.search);
             let text = urlParams.get('text');
             let type = urlParams.get('type') || 'base64';
@@ -393,15 +469,16 @@
             } else {
                 document.body.innerHTML = `<pre style="color:#00ffcc;background:#0a0a0a;padding:20px;margin:0;min-height:100vh;font-family:monospace;">{
   "name": "Shadow Encrypt API",
-  "version": "1.0",
-  "description": "API لتشفير النصوص - مدمج في الموقع",
+  "version": "2.0",
+  "description": "API لتشفير النصوص - يدعم Obfuscator مثل الكود المحمي",
+  "types": ["base64", "hex", "md5", "sha256", "obfuscate"],
   "endpoints": {
     "GET /api": {
       "params": {
         "text": "النص المراد تشفيره",
-        "type": "base64|hex|md5|sha256"
+        "type": "base64|hex|md5|sha256|obfuscate"
       },
-      "example": "/api?text=مرحبا&type=base64"
+      "example": "/api?text=مرحبا&type=obfuscate"
     }
   }
 }</pre>`;
