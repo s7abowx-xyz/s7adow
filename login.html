@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - Obfuscator.io</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <i class="fas fa-shield-alt"></i>
+                <h2>مرحباً بعودتك</h2>
+                <p>سجل الدخول للمتابعة</p>
+            </div>
+            
+            <button class="auth-btn github">
+                <i class="fab fa-github"></i>
+                تأيغ مع GitHub
+            </button>
+            
+            <div class="auth-divider">أو تأيغ عبر البريد الإلكتروني</div>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <label>بريد إلكتروني</label>
+                    <input type="email" placeholder="you@example.com" required>
+                </div>
+                <div class="input-group">
+                    <label>كلمة المرور</label>
+                    <input type="password" placeholder="كلمة مرورك" required>
+                </div>
+                <div class="auth-links">
+                    <a href="forgot.html">هل نسيت كلمة السر؟</a>
+                </div>
+                <button type="submit" class="auth-submit">تسجيل الدخول</button>
+            </form>
+            
+            <div class="auth-footer">
+                ليس لديك حساب؟ <a href="signup.html">سجل الآن</a>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

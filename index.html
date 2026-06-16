@@ -2,384 +2,264 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Shadow Obfuscator Pro | تشويش الأكواد + API</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: #0a0c10;
-            font-family: 'Segoe UI', 'Fira Code', monospace;
-            color: #e4e4e7;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #2a2f3b;
-            padding-bottom: 20px;
-        }
-
-        .header h1 {
-            background: linear-gradient(135deg, #00ffcc, #ff4757);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-size: 2rem;
-        }
-
-        /* Tabs */
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #2a2f3b;
-            padding-bottom: 10px;
-        }
-
-        .tab-btn {
-            background: none;
-            border: none;
-            color: #a1a1aa;
-            padding: 10px 20px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.3s;
-            border-radius: 8px;
-        }
-
-        .tab-btn.active {
-            background: #2a2f3b;
-            color: #00ffcc;
-            box-shadow: 0 0 5px rgba(0,255,204,0.3);
-        }
-
-        /* Grid Layout */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        /* Cards */
-        .card {
-            background: #181c24;
-            border-radius: 16px;
-            padding: 20px;
-            border: 1px solid #2a2f3b;
-            transition: 0.2s;
-        }
-
-        .card:hover {
-            border-color: #00ffcc;
-            box-shadow: 0 0 15px rgba(0,255,204,0.1);
-        }
-
-        textarea, select {
-            width: 100%;
-            background: #0f1117;
-            border: 1px solid #2a2f3b;
-            border-radius: 12px;
-            padding: 12px;
-            color: #e4e4e7;
-            font-family: 'Fira Code', monospace;
-            font-size: 13px;
-            resize: vertical;
-        }
-
-        textarea:focus, select:focus {
-            outline: none;
-            border-color: #00ffcc;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            margin: 15px 0;
-            flex-wrap: wrap;
-        }
-
-        button {
-            background: #2a2f3b;
-            border: none;
-            padding: 8px 18px;
-            border-radius: 30px;
-            color: #e4e4e7;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        button.primary {
-            background: linear-gradient(135deg, #00ffcc, #00ff88);
-            color: #000;
-        }
-
-        button.danger {
-            background: #ff4757;
-            color: #fff;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.05);
-        }
-
-        .result-box {
-            background: #0f1117;
-            border-radius: 12px;
-            padding: 12px;
-            font-family: monospace;
-            font-size: 12px;
-            white-space: pre-wrap;
-            word-break: break-word;
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid #2a2f3b;
-            margin-top: 10px;
-        }
-
-        .api-card {
-            background: #0f1117;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            border-left: 4px solid #00ffcc;
-        }
-
-        .api-url {
-            background: #000;
-            padding: 10px;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 12px;
-            word-break: break-all;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 30px;
-            color: #71717a;
-            border-top: 1px solid #2a2f3b;
-            margin-top: 40px;
-        }
-
-        @media (max-width: 768px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obfuscator.io | حماية كود جافا سكريبت</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <h1>🕷️ Shadow Obfuscator Pro</h1>
-        <p>مثل obfuscator.io + API مخصص لكل أداة</p>
-    </div>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>Obfuscator<span class="dot">.</span>io</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="active">الرئيسية</a>
+                <a href="#">المنتج</a>
+                <a href="#">التسعير</a>
+                <a href="#">التوثيق</a>
+                <a href="login.html">تسجيل الدخول</a>
+            </div>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
 
-    <div class="tabs">
-        <button class="tab-btn active" onclick="showTab('obfuscate')">🛡️ تشويش الأكواد</button>
-        <button class="tab-btn" onclick="showTab('api')">🔌 واجهة API (للبوتات)</button>
-    </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>جافا سكريبت <span class="highlight">إخفاء الآلة الافتراضية</span></h1>
+            <p>حول التعليمات البرمجية الخاصة بك إلى بايت كود مخصص يعمل على آلة افتراضية JS - الآن مع ميزات متقدمة للدفاع الذاتي، وحماية التصحيح، وإجراءات مضادة لهجمات LLM.</p>
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="window.location.href='signup.html'">احصل على حماية الأجهزة الافتراضية</button>
+                <button class="btn-secondary" onclick="scrollToObfuscator()">أو جرب التشفير القياسي المجاني ↓</button>
+            </div>
+        </div>
+    </section>
 
-    <!-- قسم التشويش -->
-    <div id="obfuscateTab">
-        <div class="grid-2">
-            <!-- الإدخال -->
-            <div class="card">
-                <h3>📥 الكود الأصلي</h3>
-                <textarea id="inputCode" rows="12" placeholder="// الصق كود JavaScript هنا ...&#10;console.log('Hello Shadow');"></textarea>
-                <div class="btn-group">
-                    <button class="primary" onclick="obfuscateCode()">🔒 تشويش الكود</button>
-                    <button onclick="clearInput()">🗑️ مسح</button>
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="container">
+            <h2 class="section-title">شاهد عملية إخفاء الآلات الافتراضية أثناء العمل</h2>
+            <p class="section-subtitle">يتحول الكود القابل للقراءة إلى بايت كود غير قابل للاختراق يعمل على آلة افتراضية مخصصة</p>
+            
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <h3>قبل</h3>
+                    <h4>كود قابل للقراءة</h4>
+                    <div class="code-box" id="beforeCode">
+                        <pre><code>function calculateTotal(items) {
+    let total = 0;
+    for (let i = 0; i < items.length; i++) {
+        total += items[i].price;
+    }
+    return total;
+}
+
+console.log(calculateTotal([
+    {price: 10},
+    {price: 20},
+    {price: 30}
+]));</code></pre>
+                    </div>
+                </div>
+                <div class="demo-card">
+                    <h3>بعد</h3>
+                    <h4>كود محمي بـ VM</h4>
+                    <div class="code-box" id="afterCode">
+                        <pre><code>(function(){
+const _0x2c6c28 = atob("ZnVuY3Rpb24gY2FsY3VsYXRlVG90YWwoaXRlbXMpIHsKICAgIGxldCB0b3RhbCA9IDA7CiAgICBmb3IgKGxldCBpID0gMDsgaSA8IGl0ZW1zLmxlbmd0aDsgaSsrKSB7CiAgICAgICAgdG90YWwgKz0gaXRlbXNbaV0ucHJpY2U7CiAgICB9CiAgICByZXR1cm4gdG90YWw7Cn0KY29uc29sZS5sb2coY2FsY3VsYXRlVG90YWwoW3twcmljZToxMH0se3ByaWNlOjIwfSx7cHJpY2U6MzB9XSkpOw==");
+const _0x4e1d8c = new Function(_0x2c6c28);
+return _0x4e1d8c();
+})();</code></pre>
+                    </div>
                 </div>
             </div>
-            <!-- الإخراج -->
-            <div class="card">
-                <h3>📤 الكود المُشوَّش</h3>
-                <div id="outputCode" class="result-box">// النتيجة ستظهر هنا...</div>
-                <div class="btn-group">
-                    <button onclick="copyToClipboard('outputCode')">📋 نسخ النتيجة</button>
-                    <button id="downloadBtn" onclick="downloadResult()">📥 تنزيل كملف (.js)</button>
+            
+            <div class="demo-buttons">
+                <button class="btn-primary" onclick="obfuscateDemo()">🔄 تشويش هذا الكود</button>
+                <button class="btn-secondary" onclick="resetDemo()">↺ إعادة تعيين</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">ميزات متقدمة مضادة للاختراق</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-shield-virus"></i>
+                    <h3>دفاع ذاتي للـ VM</h3>
+                    <p>يتحقق وقت تشغيل VM من سلامته في كل مرحلة - يتم اكتشاف أي تعديل أو حقن خطاف أو اعتراض وكيل وتحييده.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-bug"></i>
+                    <h3>حماية التصحيح</h3>
+                    <p>يغلق أدوات المطور ونقاط التوقف والتفتيش أثناء التشغيل - مما يجعل من الصعب للغاية تتبع التعليمات البرمجية أو ملاحظتها.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-robot"></i>
+                    <h3>مضاد لهجمات LLM</h3>
+                    <p>تم تصميمه لمنع معظم الطرق التي يهاجم بها LLM التعليمات البرمجية المشوشة، مما يرفع تكلفة الوصول إلى الذاكرة.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-code-branch"></i>
+                    <h3>تشفير البايت كود</h3>
+                    <p>يتم تحويل المنطق الأصلي إلى بايت كود مخصص لا يمكن لأدوات التحليل الثابتة فهمه دون هندسة عكسية للـ VM بأكمله.</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- قسم API -->
-    <div id="apiTab" style="display: none;">
-        <div class="card">
-            <h3>📡 API مستقلة – استخدمها في بوتات واتساب وتيليجرام</h3>
-            <p>أرسل طلب <code>POST</code> أو <code>GET</code> مع الكود ونوع التشويش لتحصل على النتيجة فورًا.</p>
-
-            <div class="api-card">
-                <h4>1. 🔐 تشويش عادي (Standard Obfuscation)</h4>
-                <div class="api-url">POST /api/obfuscate</div>
-                <code>{
-  "code": "console.log('test');",
-  "options": "standard"
-}</code>
-            </div>
-
-            <div class="api-card">
-                <h4>2. ⚙️ تشويش متقدم (Advanced Obfuscation)</h4>
-                <div class="api-url">POST /api/obfuscate</div>
-                <code>{
-  "code": "console.log('test');",
-  "options": "advanced"
-}</code>
-            </div>
-
-            <div class="api-card">
-                <h4>3. 🧠 تشويش VM (مثل الموقع الأصلي)</h4>
-                <div class="api-url">POST /api/vm-obfuscate</div>
-                <code>{
-  "code": "function test() { return 42; }"
-}</code>
-            </div>
-
-            <div class="api-card">
-                <h4>📌 الاختصارات (للاستخدام السريع في البوتات)</h4>
-                <div class="api-url">GET /api/obfuscate?code=console.log('hi')&options=standard</div>
-                <div class="api-url">GET /api/vm-obfuscate?code=alert(1)</div>
-            </div>
-
-            <div class="result-box" style="margin-top: 20px;">
-                💡 <strong>ملاحظة تقنية:</strong> جميع واجهات API تعمل مباشرة داخل هذا الملف (محاكاة كاملة). يمكنك تعديلها لترتبط بخادم حقيقي.
+    <!-- Pricing Section -->
+    <section class="pricing">
+        <div class="container">
+            <h2 class="section-title">خطط التسعير</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">مجاني</div>
+                    <div class="pricing-price">0 دولار</div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> تشويش قياسي</li>
+                            <li><i class="fas fa-check"></i> 25 عملية تشويش شهرياً</li>
+                            <li><i class="fas fa-check"></i> 4 خيارات تشويش</li>
+                            <li><i class="fas fa-check"></i> غير محدود - تشويش قياسي</li>
+                        </ul>
+                    </div>
+                    <button class="btn-outline" onclick="window.location.href='signup.html'">سجل مجاناً</button>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <div class="pricing-header">احترافي</div>
+                    <div class="pricing-price">19 دولار</div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> تشويش VM متقدم</li>
+                            <li><i class="fas fa-check"></i> 100 عملية تشويش شهرياً</li>
+                            <li><i class="fas fa-check"></i> 30 خيار تشويش</li>
+                            <li><i class="fas fa-check"></i> جميع خيارات VM المتقدمة</li>
+                            <li><i class="fas fa-check"></i> وصول إلى API (REST)</li>
+                            <li><i class="fas fa-check"></i> ملفات متعددة (حتى 10 ملفات)</li>
+                            <li><i class="fas fa-check"></i> ملفات HTML مع JS</li>
+                            <li><i class="fas fa-check"></i> إعدادات تشفير مخصصة</li>
+                        </ul>
+                    </div>
+                    <button class="btn-primary" onclick="window.location.href='signup.html'">اشترك الآن</button>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="pricing-header">فريق</div>
+                    <div class="pricing-price">149 دولار</div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> كل ميزات الاحترافي</li>
+                            <li><i class="fas fa-check"></i> 2.5 ألف عملية تشويش شهرياً</li>
+                            <li><i class="fas fa-check"></i> 600 عملية / يوم لكل عضو</li>
+                            <li><i class="fas fa-check"></i> دعم مخصص للفريق</li>
+                        </ul>
+                    </div>
+                    <button class="btn-outline" onclick="window.location.href='signup.html'">تواصل مع المبيعات</button>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div class="footer">
-        🕷️ Shadow Obfuscator Pro | يعمل محليًا بآلية تشويش متقدمة + API مدمج للبوتات
-    </div>
-</div>
+    <!-- Obfuscator Tool -->
+    <section class="obfuscator-tool">
+        <div class="container">
+            <h2 class="section-title">جرب الأداة مجاناً</h2>
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <h3><i class="fas fa-code"></i> كود الإدخال</h3>
+                    <textarea id="inputCode" rows="12" placeholder="// الصق كود JavaScript هنا...
+function test() {
+    console.log('Hello World');
+    return 42;
+}
+test();"></textarea>
+                    <div class="tool-options">
+                        <label><input type="radio" name="level" value="standard" checked> تشويش قياسي</label>
+                        <label><input type="radio" name="level" value="advanced"> تشويش متقدم</label>
+                        <label><input type="radio" name="level" value="vm"> حماية VM</label>
+                    </div>
+                    <button class="btn-primary" onclick="obfuscateCode()">🔒 تشويش الكود</button>
+                </div>
+                <div class="tool-card">
+                    <h3><i class="fas fa-lock"></i> الكود المشوش</h3>
+                    <div id="outputCode" class="result-box">// النتيجة ستظهر هنا...</div>
+                    <div class="tool-buttons">
+                        <button class="btn-secondary" onclick="copyResult()"><i class="fas fa-copy"></i> نسخ</button>
+                        <button class="btn-secondary" onclick="downloadResult()"><i class="fas fa-download"></i> تنزيل</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<script>
-    // ========== المنطق الأساسي ==========
-    function obfuscateCodeLocally(code, level = 'standard') {
-        if (!code.trim()) return '// الرجاء إدخال الكود أولاً';
+    <!-- API Section -->
+    <section class="api-section">
+        <div class="container">
+            <h2 class="section-title">API للبوتات والمطورين</h2>
+            <div class="api-card">
+                <h3><i class="fas fa-plug"></i> واجهات API المتاحة</h3>
+                <div class="api-endpoint">
+                    <code>POST /api/obfuscate</code>
+                    <p>تشفير الكود - { "code": "...", "level": "standard|advanced|vm" }</p>
+                </div>
+                <div class="api-endpoint">
+                    <code>GET /api/obfuscate?code=...&level=standard</code>
+                    <p>تشفير سريع عبر الرابط</p>
+                </div>
+                <div class="api-endpoint">
+                    <code>GET /api/info</code>
+                    <p>معلومات عن الـ API</p>
+                </div>
+                <div class="api-url" id="apiUrlDisplay"></div>
+            </div>
+        </div>
+    </section>
 
-        if (level === 'advanced') {
-            // طبقتين من Base64 + دوال متعرجة
-            let b64 = btoa(unescape(encodeURIComponent(code)));
-            return `(function(){
-const _0x${Math.random().toString(36).substring(2,6)} = atob("${b64}");
-const _0x${Math.random().toString(36).substring(2,6)} = new Function(_0x${Math.random().toString(36).substring(2,6)});
-return _0x${Math.random().toString(36).substring(2,6)}();
-})();`;
-        } else if (level === 'vm') {
-            // محاكاة بسيطة لتقنية VM obfuscation
-            let b64 = btoa(unescape(encodeURIComponent(code)));
-            let vmName = '_VM0x' + Math.random().toString(36).substring(2, 10);
-            return `// VM Obfuscation Simulation (مثل obfuscator.io)
-const ${vmName} = (function(){
-const __bytecode = atob("${b64}");
-const __vm = new Function(__bytecode);
-return __vm;
-})();
-${vmName}();`;
-        }
-        // Standard
-        let base64 = btoa(unescape(encodeURIComponent(code)));
-        return `eval(atob("${base64}"));`;
-    }
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>قانوني</h4>
+                    <ul>
+                        <li><a href="terms.html">شروط الخدمة</a></li>
+                        <li><a href="#">سياسة الاسترداد</a></li>
+                        <li><a href="#">سياسة الخصوصية</a></li>
+                        <li><a href="#">سياسة ملفات تعريف الارتباط</a></li>
+                        <li><a href="#">تراخيص الطرف الثالث</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>منتج</h4>
+                    <ul>
+                        <li><a href="#">الوثائق</a></li>
+                        <li><a href="#">التسعير</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>الدعم</h4>
+                    <ul>
+                        <li><a href="#">الأسئلة الشائعة</a></li>
+                        <li><a href="#">تواصل معنا</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 Obfuscator.io - حماية كود جافا سكريبت | تشويش متقدم للأكواد</p>
+            </div>
+        </div>
+    </footer>
 
-    async function obfuscateCode() {
-        const input = document.getElementById('inputCode').value;
-        if (!input.trim()) {
-            document.getElementById('outputCode').innerText = '// يرجى كتابة الكود أولاً';
-            return;
-        }
-
-        // محاكاة اختيار مستوى التشويش (يمكنك إضافة select لاحقًا)
-        let level = 'standard'; // يمكنك تغييرها إلى advanced أو vm
-        let result = obfuscateCodeLocally(input, level);
-        document.getElementById('outputCode').innerText = result;
-    }
-
-    function clearInput() {
-        document.getElementById('inputCode').value = '';
-        document.getElementById('outputCode').innerText = '// النتيجة ستظهر هنا...';
-    }
-
-    function copyToClipboard(elementId) {
-        let text = document.getElementById(elementId).innerText;
-        if (!text || text.includes('النتيجة ستظهر')) return;
-        navigator.clipboard.writeText(text);
-        alert('✅ تم نسخ الكود المشوّش');
-    }
-
-    function downloadResult() {
-        let code = document.getElementById('outputCode').innerText;
-        if (!code || code.includes('النتيجة ستظهر')) return;
-        let blob = new Blob([code], { type: 'text/javascript' });
-        let link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `obfuscated_${Date.now()}.js`;
-        link.click();
-        URL.revokeObjectURL(link.href);
-    }
-
-    function showTab(tabName) {
-        const obfTab = document.getElementById('obfuscateTab');
-        const apiTab = document.getElementById('apiTab');
-        const btns = document.querySelectorAll('.tab-btn');
-        if (tabName === 'obfuscate') {
-            obfTab.style.display = 'block';
-            apiTab.style.display = 'none';
-            btns[0].classList.add('active');
-            btns[1].classList.remove('active');
-        } else {
-            obfTab.style.display = 'none';
-            apiTab.style.display = 'block';
-            btns[0].classList.remove('active');
-            btns[1].classList.add('active');
-        }
-    }
-
-    // ========== API مدمجة: معالجة الطلبات من البوتات ==========
-    function handleApiRequest(reqPath, method, body) {
-        if (reqPath === '/api/obfuscate' || reqPath === '/api/obfuscate/') {
-            let code = body?.code || '';
-            let options = body?.options || 'standard';
-            if (!code) return { error: 'code is required' };
-            let result = obfuscateCodeLocally(code, options);
-            return { success: true, obfuscated: result, type: options };
-        }
-        if (reqPath === '/api/vm-obfuscate') {
-            let code = body?.code || '';
-            if (!code) return { error: 'code is required' };
-            let result = obfuscateCodeLocally(code, 'vm');
-            return { success: true, obfuscated: result, engine: 'VM-Protect' };
-        }
-        return { error: 'Invalid API endpoint' };
-    }
-
-    // ========== محاكاة سيرفر API ==========
-    if (window.location.pathname.includes('/api/')) {
-        let path = window.location.pathname;
-        let params = new URLSearchParams(window.location.search);
-        let body = {};
-        if (params.has('code')) body.code = params.get('code');
-        if (params.has('options')) body.options = params.get('options');
-        
-        let response = handleApiRequest(path, 'GET', body);
-        document.body.innerHTML = `<pre style="background:#0a0c10;color:#00ffcc;padding:20px;margin:0;font-family:monospace;">${JSON.stringify(response, null, 2)}</pre>`;
-        document.body.style.background = '#0a0c10';
-    }
-</script>
+    <script src="script.js"></script>
 </body>
 </html>
