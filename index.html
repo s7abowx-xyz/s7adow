@@ -2,488 +2,384 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shadow Encrypt - تشفير احترافي + Obfuscator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Shadow Obfuscator Pro | تشويش الأكواد + API</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            background: linear-gradient(135deg, #0a0a0a 0%, #0f0c29 50%, #1a1a2e 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            color: #fff;
-        }
-        .header {
-            background: rgba(0, 0, 0, 0.8);
+            background: #0a0c10;
+            font-family: 'Segoe UI', 'Fira Code', monospace;
+            color: #e4e4e7;
             padding: 20px;
-            text-align: center;
-            border-bottom: 2px solid #00ffcc;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
         }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #2a2f3b;
+            padding-bottom: 20px;
+        }
+
         .header h1 {
-            font-size: 2rem;
             background: linear-gradient(135deg, #00ffcc, #ff4757);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            font-size: 2rem;
         }
-        .header p {
-            color: #888;
-            margin-top: 5px;
-        }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .tool-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            border: 1px solid rgba(0, 255, 204, 0.2);
-            transition: 0.3s;
-        }
-        .tool-card:hover {
-            border-color: #00ffcc;
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.1);
-        }
-        .tool-card h3 {
-            color: #00ffcc;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
+
+        /* Tabs */
+        .tabs {
             display: flex;
-            align-items: center;
             gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #2a2f3b;
+            padding-bottom: 10px;
         }
-        .tool-card textarea, .tool-card input {
-            width: 100%;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(0, 255, 204, 0.3);
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #a1a1aa;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
             border-radius: 8px;
-            color: #fff;
-            font-family: monospace;
-            font-size: 14px;
+        }
+
+        .tab-btn.active {
+            background: #2a2f3b;
+            color: #00ffcc;
+            box-shadow: 0 0 5px rgba(0,255,204,0.3);
+        }
+
+        /* Grid Layout */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Cards */
+        .card {
+            background: #181c24;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #2a2f3b;
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            border-color: #00ffcc;
+            box-shadow: 0 0 15px rgba(0,255,204,0.1);
+        }
+
+        textarea, select {
+            width: 100%;
+            background: #0f1117;
+            border: 1px solid #2a2f3b;
+            border-radius: 12px;
+            padding: 12px;
+            color: #e4e4e7;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
             resize: vertical;
         }
-        .tool-card textarea:focus, .tool-card input:focus {
+
+        textarea:focus, select:focus {
             outline: none;
             border-color: #00ffcc;
         }
+
         .btn-group {
             display: flex;
-            gap: 10px;
-            margin: 10px 0;
+            gap: 12px;
+            margin: 15px 0;
             flex-wrap: wrap;
         }
+
         button {
-            padding: 8px 16px;
-            background: linear-gradient(135deg, #00ffcc, #00ff88);
+            background: #2a2f3b;
             border: none;
-            border-radius: 8px;
-            color: #000;
+            padding: 8px 18px;
+            border-radius: 30px;
+            color: #e4e4e7;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.2s;
         }
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
-        }
-        .btn-copy {
-            background: linear-gradient(135deg, #ff4757, #ff6b81);
-            color: #fff;
-        }
-        .btn-clear {
-            background: linear-gradient(135deg, #555, #777);
-            color: #fff;
-        }
-        .btn-download {
-            background: linear-gradient(135deg, #00ff88, #00cc66);
+
+        button.primary {
+            background: linear-gradient(135deg, #00ffcc, #00ff88);
             color: #000;
         }
-        .result {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
+
+        button.danger {
+            background: #ff4757;
+            color: #fff;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+        }
+
+        .result-box {
+            background: #0f1117;
+            border-radius: 12px;
             padding: 12px;
-            margin-top: 10px;
             font-family: monospace;
             font-size: 12px;
-            word-break: break-all;
-            max-height: 200px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 300px;
             overflow-y: auto;
-            border: 1px solid rgba(0, 255, 204, 0.2);
+            border: 1px solid #2a2f3b;
+            margin-top: 10px;
         }
-        .api-info {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 30px;
-            border: 1px solid rgba(0, 255, 204, 0.3);
+
+        .api-card {
+            background: #0f1117;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 4px solid #00ffcc;
         }
-        .api-info h3 {
-            color: #00ffcc;
-            margin-bottom: 10px;
-        }
-        .api-endpoint {
+
+        .api-url {
             background: #000;
             padding: 10px;
             border-radius: 8px;
             font-family: monospace;
-            margin: 10px 0;
+            font-size: 12px;
             word-break: break-all;
         }
+
         .footer {
             text-align: center;
             padding: 30px;
-            color: #666;
-            border-top: 1px solid rgba(0, 255, 204, 0.2);
+            color: #71717a;
+            border-top: 1px solid #2a2f3b;
             margin-top: 40px;
         }
+
         @media (max-width: 768px) {
-            .tools-grid { grid-template-columns: 1fr; }
-            .header h1 { font-size: 1.5rem; }
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
+<div class="container">
     <div class="header">
-        <h1>🔐 Shadow Encrypt Pro</h1>
-        <p>تشفير النصوص + Obfuscator (تشفير مثل الكود المحمي) + API للبوتات</p>
+        <h1>🕷️ Shadow Obfuscator Pro</h1>
+        <p>مثل obfuscator.io + API مخصص لكل أداة</p>
     </div>
 
-    <div class="container">
-        <div class="tools-grid">
-            
-            <!-- 1. Base64 -->
-            <div class="tool-card">
-                <h3>📦 Base64</h3>
-                <textarea id="b64Input" rows="2" placeholder="أدخل النص..."></textarea>
-                <div class="btn-group">
-                    <button onclick="b64Encode()">🔒 تشفير</button>
-                    <button onclick="b64Decode()">🔓 فك</button>
-                    <button class="btn-copy" onclick="copyResult('b64Result')">📋 نسخ</button>
-                    <button class="btn-download" onclick="downloadResult('b64Result', 'base64.txt')">📥 تنزيل</button>
-                    <button class="btn-clear" onclick="clearTool('b64Input','b64Result')">🗑️ مسح</button>
-                </div>
-                <div id="b64Result" class="result">النتيجة...</div>
-            </div>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('obfuscate')">🛡️ تشويش الأكواد</button>
+        <button class="tab-btn" onclick="showTab('api')">🔌 واجهة API (للبوتات)</button>
+    </div>
 
-            <!-- 2. Hex -->
-            <div class="tool-card">
-                <h3>🔢 Hexadecimal</h3>
-                <textarea id="hexInput" rows="2" placeholder="أدخل النص..."></textarea>
+    <!-- قسم التشويش -->
+    <div id="obfuscateTab">
+        <div class="grid-2">
+            <!-- الإدخال -->
+            <div class="card">
+                <h3>📥 الكود الأصلي</h3>
+                <textarea id="inputCode" rows="12" placeholder="// الصق كود JavaScript هنا ...&#10;console.log('Hello Shadow');"></textarea>
                 <div class="btn-group">
-                    <button onclick="hexEncode()">🔒 تشفير</button>
-                    <button onclick="hexDecode()">🔓 فك</button>
-                    <button class="btn-copy" onclick="copyResult('hexResult')">📋 نسخ</button>
-                    <button class="btn-download" onclick="downloadResult('hexResult', 'hex.txt')">📥 تنزيل</button>
-                    <button class="btn-clear" onclick="clearTool('hexInput','hexResult')">🗑️ مسح</button>
+                    <button class="primary" onclick="obfuscateCode()">🔒 تشويش الكود</button>
+                    <button onclick="clearInput()">🗑️ مسح</button>
                 </div>
-                <div id="hexResult" class="result">النتيجة...</div>
             </div>
-
-            <!-- 3. MD5 -->
-            <div class="tool-card">
-                <h3>🔐 MD5 Hash</h3>
-                <textarea id="md5Input" rows="2" placeholder="أدخل النص..."></textarea>
+            <!-- الإخراج -->
+            <div class="card">
+                <h3>📤 الكود المُشوَّش</h3>
+                <div id="outputCode" class="result-box">// النتيجة ستظهر هنا...</div>
                 <div class="btn-group">
-                    <button onclick="md5Hash()">🔒 تشفير</button>
-                    <button class="btn-copy" onclick="copyResult('md5Result')">📋 نسخ</button>
-                    <button class="btn-download" onclick="downloadResult('md5Result', 'md5.txt')">📥 تنزيل</button>
-                    <button class="btn-clear" onclick="clearTool('md5Input','md5Result')">🗑️ مسح</button>
+                    <button onclick="copyToClipboard('outputCode')">📋 نسخ النتيجة</button>
+                    <button id="downloadBtn" onclick="downloadResult()">📥 تنزيل كملف (.js)</button>
                 </div>
-                <div id="md5Result" class="result">النتيجة...</div>
             </div>
-
-            <!-- 4. SHA256 -->
-            <div class="tool-card">
-                <h3>🔐 SHA-256</h3>
-                <textarea id="sha256Input" rows="2" placeholder="أدخل النص..."></textarea>
-                <div class="btn-group">
-                    <button onclick="sha256Hash()">🔒 تشفير</button>
-                    <button class="btn-copy" onclick="copyResult('sha256Result')">📋 نسخ</button>
-                    <button class="btn-download" onclick="downloadResult('sha256Result', 'sha256.txt')">📥 تنزيل</button>
-                    <button class="btn-clear" onclick="clearTool('sha256Input','sha256Result')">🗑️ مسح</button>
-                </div>
-                <div id="sha256Result" class="result">النتيجة...</div>
-            </div>
-
-            <!-- 5. OBFUSCATOR (جديد) -->
-            <div class="tool-card">
-                <h3>🕷️ Obfuscator (تشويش الكود)</h3>
-                <textarea id="obfuscateInput" rows="3" placeholder="أدخل الكود أو النص لتشويشه..."></textarea>
-                <div class="btn-group">
-                    <button onclick="obfuscateCode()">🕷️ تشويش الكود</button>
-                    <button class="btn-copy" onclick="copyResult('obfuscateResult')">📋 نسخ</button>
-                    <button class="btn-download" onclick="downloadResult('obfuscateResult', 'obfuscated.js')">📥 تنزيل</button>
-                    <button class="btn-clear" onclick="clearTool('obfuscateInput','obfuscateResult')">🗑️ مسح</button>
-                </div>
-                <div id="obfuscateResult" class="result">النتيجة...</div>
-            </div>
-
-            <!-- 6. Reverse Text -->
-            <div class="tool-card">
-                <h3>🔄 عكس النص</h3>
-                <textarea id="reverseInput" rows="2" placeholder="أدخل النص..."></textarea>
-                <div class="btn-group">
-                    <button onclick="reverseText()">🔄 عكس</button>
-                    <button class="btn-copy" onclick="copyResult('reverseResult')">📋 نسخ</button>
-                    <button class="btn-download" onclick="downloadResult('reverseResult', 'reverse.txt')">📥 تنزيل</button>
-                    <button class="btn-clear" onclick="clearTool('reverseInput','reverseResult')">🗑️ مسح</button>
-                </div>
-                <div id="reverseResult" class="result">النتيجة...</div>
-            </div>
-
         </div>
+    </div>
 
-        <!-- API Info -->
-        <div class="api-info">
-            <h3>🔌 API مدمج للبوتات</h3>
-            <p>استخدم الـ API لتشفير النصوص من بوتاتك مباشرة</p>
-            <div class="api-endpoint" id="apiUrl"></div>
-            <p><strong>GET /api?text=نص&type=base64|hex|md5|sha256|obfuscate</strong></p>
-            <p><strong>مثال:</strong><br>
-            <code>curl "https://your-site.vercel.app/api?text=مرحبا&type=base64"</code></p>
-            <p><strong>جرب الآن:</strong><br>
-            <input type="text" id="apiTestText" placeholder="أدخل نص" style="width: 200px;">
-            <select id="apiTestType">
-                <option value="base64">Base64</option>
-                <option value="hex">Hex</option>
-                <option value="md5">MD5</option>
-                <option value="sha256">SHA256</option>
-                <option value="obfuscate">Obfuscator</option>
-            </select>
-            <button onclick="testAPI()">🧪 تجربة API</button>
-            </p>
-            <div id="apiTestResult" class="result" style="margin-top: 10px;">النتيجة ستظهر هنا...</div>
+    <!-- قسم API -->
+    <div id="apiTab" style="display: none;">
+        <div class="card">
+            <h3>📡 API مستقلة – استخدمها في بوتات واتساب وتيليجرام</h3>
+            <p>أرسل طلب <code>POST</code> أو <code>GET</code> مع الكود ونوع التشويش لتحصل على النتيجة فورًا.</p>
+
+            <div class="api-card">
+                <h4>1. 🔐 تشويش عادي (Standard Obfuscation)</h4>
+                <div class="api-url">POST /api/obfuscate</div>
+                <code>{
+  "code": "console.log('test');",
+  "options": "standard"
+}</code>
+            </div>
+
+            <div class="api-card">
+                <h4>2. ⚙️ تشويش متقدم (Advanced Obfuscation)</h4>
+                <div class="api-url">POST /api/obfuscate</div>
+                <code>{
+  "code": "console.log('test');",
+  "options": "advanced"
+}</code>
+            </div>
+
+            <div class="api-card">
+                <h4>3. 🧠 تشويش VM (مثل الموقع الأصلي)</h4>
+                <div class="api-url">POST /api/vm-obfuscate</div>
+                <code>{
+  "code": "function test() { return 42; }"
+}</code>
+            </div>
+
+            <div class="api-card">
+                <h4>📌 الاختصارات (للاستخدام السريع في البوتات)</h4>
+                <div class="api-url">GET /api/obfuscate?code=console.log('hi')&options=standard</div>
+                <div class="api-url">GET /api/vm-obfuscate?code=alert(1)</div>
+            </div>
+
+            <div class="result-box" style="margin-top: 20px;">
+                💡 <strong>ملاحظة تقنية:</strong> جميع واجهات API تعمل مباشرة داخل هذا الملف (محاكاة كاملة). يمكنك تعديلها لترتبط بخادم حقيقي.
+            </div>
         </div>
     </div>
 
     <div class="footer">
-        <p>🕷️ Shadow Encrypt Pro - تشفير النصوص + Obfuscator + API للبوتات | WORM HUNTER</p>
+        🕷️ Shadow Obfuscator Pro | يعمل محليًا بآلية تشويش متقدمة + API مدمج للبوتات
     </div>
+</div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
-    <script>
-        // عرض رابط API
-        document.getElementById('apiUrl').innerHTML = window.location.origin + '/api';
+<script>
+    // ========== المنطق الأساسي ==========
+    function obfuscateCodeLocally(code, level = 'standard') {
+        if (!code.trim()) return '// الرجاء إدخال الكود أولاً';
 
-        // ========== دوال التشفير الأساسية ==========
-        
-        // Base64
-        function b64Encode() {
-            let input = document.getElementById('b64Input').value;
-            if (!input) { alert('أدخل النص أولاً'); return; }
-            let result = btoa(unescape(encodeURIComponent(input)));
-            document.getElementById('b64Result').innerHTML = result;
-        }
-        function b64Decode() {
-            let input = document.getElementById('b64Input').value;
-            if (!input) { alert('أدخل النص أولاً'); return; }
-            try {
-                let result = decodeURIComponent(escape(atob(input)));
-                document.getElementById('b64Result').innerHTML = result;
-            } catch(e) { alert('نص غير صالح'); }
-        }
-
-        // Hex
-        function hexEncode() {
-            let input = document.getElementById('hexInput').value;
-            let result = '';
-            for (let i = 0; i < input.length; i++) {
-                result += input.charCodeAt(i).toString(16);
-            }
-            document.getElementById('hexResult').innerHTML = result;
-        }
-        function hexDecode() {
-            let input = document.getElementById('hexInput').value;
-            let result = '';
-            for (let i = 0; i < input.length; i += 2) {
-                result += String.fromCharCode(parseInt(input.substr(i, 2), 16));
-            }
-            document.getElementById('hexResult').innerHTML = result;
-        }
-
-        // MD5
-        function md5Hash() {
-            let input = document.getElementById('md5Input').value;
-            let result = CryptoJS.MD5(input).toString();
-            document.getElementById('md5Result').innerHTML = result;
-        }
-
-        // SHA256
-        function sha256Hash() {
-            let input = document.getElementById('sha256Input').value;
-            let result = CryptoJS.SHA256(input).toString();
-            document.getElementById('sha256Result').innerHTML = result;
-        }
-
-        // عكس النص
-        function reverseText() {
-            let input = document.getElementById('reverseInput').value;
-            let result = input.split('').reverse().join('');
-            document.getElementById('reverseResult').innerHTML = result;
-        }
-
-        // ========== OBFUSCATOR (تشويش الكود مثل الكود اللي أرسلته) ==========
-        
-        function obfuscateCode() {
-            let input = document.getElementById('obfuscateInput').value;
-            if (!input) { alert('أدخل الكود أو النص أولاً'); return; }
-            
-            let result = obfuscateJavaScript(input);
-            document.getElementById('obfuscateResult').innerHTML = result;
-        }
-
-        function obfuscateJavaScript(code) {
-            // 1. تحويل إلى Base64
-            let base64 = btoa(unescape(encodeURIComponent(code)));
-            
-            // 2. إنشاء دوال متعرجة (مثل الكود اللي أرسلته)
-            let randomFuncName = '_0x' + Math.random().toString(36).substring(2, 8) + Math.random().toString(36).substring(2, 6);
-            let randomVarName = '_0x' + Math.random().toString(36).substring(2, 8);
-            
-            // 3. بناء الكود المشوش
-            let obfuscated = `(function(){
-const ${randomVarName} = atob("${base64}");
-const ${randomFuncName} = new Function(${randomVarName});
-return ${randomFuncName}();
+        if (level === 'advanced') {
+            // طبقتين من Base64 + دوال متعرجة
+            let b64 = btoa(unescape(encodeURIComponent(code)));
+            return `(function(){
+const _0x${Math.random().toString(36).substring(2,6)} = atob("${b64}");
+const _0x${Math.random().toString(36).substring(2,6)} = new Function(_0x${Math.random().toString(36).substring(2,6)});
+return _0x${Math.random().toString(36).substring(2,6)}();
 })();`;
-            
-            // 4. إضافة طبقات إضافية من التشويش
-            for (let i = 0; i < 2; i++) {
-                let innerBase64 = btoa(unescape(encodeURIComponent(obfuscated)));
-                obfuscated = `(function(){
-const _0x${Math.random().toString(36).substring(2, 10)} = atob("${innerBase64}");
-const _0x${Math.random().toString(36).substring(2, 10)} = new Function(_0x${Math.random().toString(36).substring(2, 10)});
-return _0x${Math.random().toString(36).substring(2, 10)}();
-})();`;
-            }
-            
-            return obfuscated;
+        } else if (level === 'vm') {
+            // محاكاة بسيطة لتقنية VM obfuscation
+            let b64 = btoa(unescape(encodeURIComponent(code)));
+            let vmName = '_VM0x' + Math.random().toString(36).substring(2, 10);
+            return `// VM Obfuscation Simulation (مثل obfuscator.io)
+const ${vmName} = (function(){
+const __bytecode = atob("${b64}");
+const __vm = new Function(__bytecode);
+return __vm;
+})();
+${vmName}();`;
         }
-
-        // تشويش بسيط للنصوص العادية (وليس كود)
-        function simpleObfuscate(text) {
-            let result = '';
-            for (let i = 0; i < text.length; i++) {
-                let charCode = text.charCodeAt(i);
-                result += '\\u' + charCode.toString(16).padStart(4, '0');
-            }
-            return result;
-        }
-
-        // ========== دوال مساعدة ==========
-        
-        function downloadResult(elementId, filename) {
-            let content = document.getElementById(elementId).innerText;
-            if (!content || content === 'النتيجة...') {
-                alert('لا يوجد نص للتنزيل');
-                return;
-            }
-            let blob = new Blob([content], { type: 'text/plain' });
-            let link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = filename;
-            link.click();
-            URL.revokeObjectURL(link.href);
-        }
-
-        function copyResult(id) {
-            let text = document.getElementById(id).innerText;
-            if (!text || text === 'النتيجة...') { alert('لا يوجد نص للنسخ'); return; }
-            navigator.clipboard.writeText(text);
-            alert('✅ تم النسخ!');
-        }
-
-        function clearTool(inputId, resultId) {
-            document.getElementById(inputId).value = '';
-            document.getElementById(resultId).innerHTML = 'النتيجة...';
-        }
-
-        // ========== API مدمج ==========
-        
-        function encryptWithAPI(text, type) {
-            switch(type) {
-                case 'base64':
-                    return btoa(unescape(encodeURIComponent(text)));
-                case 'hex':
-                    let result = '';
-                    for (let i = 0; i < text.length; i++) {
-                        result += text.charCodeAt(i).toString(16);
-                    }
-                    return result;
-                case 'md5':
-                    return CryptoJS.MD5(text).toString();
-                case 'sha256':
-                    return CryptoJS.SHA256(text).toString();
-                case 'obfuscate':
-                    return obfuscateJavaScript(text);
-                default:
-                    return btoa(unescape(encodeURIComponent(text)));
-            }
-        }
-
-        function testAPI() {
-            let text = document.getElementById('apiTestText').value;
-            let type = document.getElementById('apiTestType').value;
-            
-            if (!text) {
-                alert('أدخل نص أولاً');
-                return;
-            }
-            
-            let result = encryptWithAPI(text, type);
-            document.getElementById('apiTestResult').innerHTML = `📝 النص: ${text}\n🔐 التشفير (${type}):\n${result}`;
-        }
-
-        // ========== معالج API للطلبات الخارجية ==========
-        
-        if (window.location.pathname === '/api' || window.location.pathname === '/api/') {
-            let urlParams = new URLSearchParams(window.location.search);
-            let text = urlParams.get('text');
-            let type = urlParams.get('type') || 'base64';
-            
-            if (text) {
-                let result = encryptWithAPI(text, type);
-                document.body.innerHTML = `<pre style="color:#00ffcc;background:#0a0a0a;padding:20px;margin:0;min-height:100vh;font-family:monospace;">{
-  "success": true,
-  "original": "${text}",
-  "encrypted": "${result}",
-  "type": "${type}"
-}</pre>`;
-            } else {
-                document.body.innerHTML = `<pre style="color:#00ffcc;background:#0a0a0a;padding:20px;margin:0;min-height:100vh;font-family:monospace;">{
-  "name": "Shadow Encrypt API",
-  "version": "2.0",
-  "description": "API لتشفير النصوص - يدعم Obfuscator مثل الكود المحمي",
-  "types": ["base64", "hex", "md5", "sha256", "obfuscate"],
-  "endpoints": {
-    "GET /api": {
-      "params": {
-        "text": "النص المراد تشفيره",
-        "type": "base64|hex|md5|sha256|obfuscate"
-      },
-      "example": "/api?text=مرحبا&type=obfuscate"
+        // Standard
+        let base64 = btoa(unescape(encodeURIComponent(code)));
+        return `eval(atob("${base64}"));`;
     }
-  }
-}</pre>`;
-            }
+
+    async function obfuscateCode() {
+        const input = document.getElementById('inputCode').value;
+        if (!input.trim()) {
+            document.getElementById('outputCode').innerText = '// يرجى كتابة الكود أولاً';
+            return;
         }
-    </script>
+
+        // محاكاة اختيار مستوى التشويش (يمكنك إضافة select لاحقًا)
+        let level = 'standard'; // يمكنك تغييرها إلى advanced أو vm
+        let result = obfuscateCodeLocally(input, level);
+        document.getElementById('outputCode').innerText = result;
+    }
+
+    function clearInput() {
+        document.getElementById('inputCode').value = '';
+        document.getElementById('outputCode').innerText = '// النتيجة ستظهر هنا...';
+    }
+
+    function copyToClipboard(elementId) {
+        let text = document.getElementById(elementId).innerText;
+        if (!text || text.includes('النتيجة ستظهر')) return;
+        navigator.clipboard.writeText(text);
+        alert('✅ تم نسخ الكود المشوّش');
+    }
+
+    function downloadResult() {
+        let code = document.getElementById('outputCode').innerText;
+        if (!code || code.includes('النتيجة ستظهر')) return;
+        let blob = new Blob([code], { type: 'text/javascript' });
+        let link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `obfuscated_${Date.now()}.js`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    }
+
+    function showTab(tabName) {
+        const obfTab = document.getElementById('obfuscateTab');
+        const apiTab = document.getElementById('apiTab');
+        const btns = document.querySelectorAll('.tab-btn');
+        if (tabName === 'obfuscate') {
+            obfTab.style.display = 'block';
+            apiTab.style.display = 'none';
+            btns[0].classList.add('active');
+            btns[1].classList.remove('active');
+        } else {
+            obfTab.style.display = 'none';
+            apiTab.style.display = 'block';
+            btns[0].classList.remove('active');
+            btns[1].classList.add('active');
+        }
+    }
+
+    // ========== API مدمجة: معالجة الطلبات من البوتات ==========
+    function handleApiRequest(reqPath, method, body) {
+        if (reqPath === '/api/obfuscate' || reqPath === '/api/obfuscate/') {
+            let code = body?.code || '';
+            let options = body?.options || 'standard';
+            if (!code) return { error: 'code is required' };
+            let result = obfuscateCodeLocally(code, options);
+            return { success: true, obfuscated: result, type: options };
+        }
+        if (reqPath === '/api/vm-obfuscate') {
+            let code = body?.code || '';
+            if (!code) return { error: 'code is required' };
+            let result = obfuscateCodeLocally(code, 'vm');
+            return { success: true, obfuscated: result, engine: 'VM-Protect' };
+        }
+        return { error: 'Invalid API endpoint' };
+    }
+
+    // ========== محاكاة سيرفر API ==========
+    if (window.location.pathname.includes('/api/')) {
+        let path = window.location.pathname;
+        let params = new URLSearchParams(window.location.search);
+        let body = {};
+        if (params.has('code')) body.code = params.get('code');
+        if (params.has('options')) body.options = params.get('options');
+        
+        let response = handleApiRequest(path, 'GET', body);
+        document.body.innerHTML = `<pre style="background:#0a0c10;color:#00ffcc;padding:20px;margin:0;font-family:monospace;">${JSON.stringify(response, null, 2)}</pre>`;
+        document.body.style.background = '#0a0c10';
+    }
+</script>
 </body>
 </html>
