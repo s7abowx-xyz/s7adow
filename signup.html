@@ -14,12 +14,12 @@
             <div class="auth-header">
                 <i class="fas fa-shield-alt"></i>
                 <h2>إنشاء حساب</h2>
-                <p>سجل الدخول هل لديك حساب بالفعل؟</p>
+                <p>سجل حسابك للمتابعة</p>
             </div>
             
-            <button class="auth-btn github">
+            <button class="auth-btn github" id="githubSignupBtn">
                 <i class="fab fa-github"></i>
-                تأيض مع GitHub
+                التسجيل مع GitHub
             </button>
             
             <div class="auth-divider">أو سجل باستخدام البريد الإلكتروني</div>
@@ -27,27 +27,26 @@
             <form id="signupForm">
                 <div class="input-group">
                     <label>الاسم الكامل</label>
-                    <input type="text" placeholder="جون دو" required>
+                    <input type="text" id="signupName" placeholder="جون دو" required>
                 </div>
                 <div class="input-group">
-                    <label>ما الغرض من استخدام التمويل</label>
-                    <select>
-                        <option>حدد حالة الاستخدام</option>
-                        <option>تطوير شخصي</option>
-                        <option>شركة / فريق</option>
-                        <option>طلابي</option>
+                    <label>ما الغرض من استخدام الخدمة</label>
+                    <select id="signupPurpose">
+                        <option value="personal">تطوير شخصي</option>
+                        <option value="business">شركة / فريق</option>
+                        <option value="student">طالب</option>
                     </select>
                 </div>
                 <div class="input-group">
                     <label>بريد إلكتروني</label>
-                    <input type="email" placeholder="you@example.com" required>
+                    <input type="email" id="signupEmail" placeholder="you@example.com" required>
                 </div>
                 <div class="input-group">
                     <label>كلمة المرور</label>
-                    <input type="password" placeholder="أنشئ كلمة مرور" required>
+                    <input type="password" id="signupPassword" placeholder="أنشئ كلمة مرور" required>
                 </div>
                 <label class="checkbox">
-                    <input type="checkbox"> أرسل لي تحديثات المنتجات ونصائح (يمكنك إلغاء الاشتراك في أي وقت)
+                    <input type="checkbox" id="newsletter"> أرسل لي تحديثات المنتجات ونصائح (يمكنك إلغاء الاشتراك في أي وقت)
                 </label>
                 <button type="submit" class="auth-submit">إنشاء حساب</button>
             </form>
@@ -57,6 +56,37 @@
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
+    
+    <script>
+        // التسجيل العادي
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault()
+            
+            const name = document.getElementById('signupName').value
+            const email = document.getElementById('signupEmail').value
+            const password = document.getElementById('signupPassword').value
+            const purpose = document.getElementById('signupPurpose').value
+            
+            const response = await fetch('/api/auth?action=register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password, purpose })
+            })
+            
+            const data = await response.json()
+            
+            if (data.success) {
+                alert('✅ تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول.')
+                window.location.href = 'login.html'
+            } else {
+                alert('❌ ' + data.error)
+            }
+        })
+        
+        // التسجيل بـ GitHub
+        document.getElementById('githubSignupBtn').addEventListener('click', () => {
+            window.location.href = '/api/github?action=login'
+        })
+    </script>
 </body>
 </html>

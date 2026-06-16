@@ -1,0 +1,5 @@
+{
+    "name": "obfuscator-site",
+    "version": "1.0.0",
+    "description": "Obfuscator.io clone with real auth + GitHub login"
+}

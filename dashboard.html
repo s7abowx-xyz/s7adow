@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - Obfuscator.io</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo"><i class="fas fa-shield-alt"></i><span>Obfuscator<span class="dot">.</span>io</span></div>
+            <div class="nav-links">
+                <a href="index.html">الرئيسية</a>
+                <a href="#" id="logoutBtn">تسجيل الخروج</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="dashboard-container">
+        <div class="dashboard-card">
+            <div class="dashboard-header">
+                <div class="user-avatar" id="userAvatar">👤</div>
+                <div class="user-info">
+                    <h2 id="userName">مرحباً، مستخدم</h2>
+                    <p id="userEmail">user@example.com</p>
+                    <span class="plan-badge" id="userPlan">FREE</span>
+                </div>
+            </div>
+            
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <i class="fas fa-code"></i>
+                    <div class="stat-number" id="obfuscationsCount">0</div>
+                    <div class="stat-label">عمليات التشويش</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-chart-line"></i>
+                    <div class="stat-number" id="usagePercent">0%</div>
+                    <div class="stat-label">نسبة الاستخدام هذا الشهر</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-calendar"></i>
+                    <div class="stat-number" id="daysLeft">30</div>
+                    <div class="stat-label">أيام متبقية</div>
+                </div>
+            </div>
+            
+            <div class="dashboard-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html#demo'">
+                    <i class="fas fa-shield-alt"></i> تشويش كود جديد
+                </button>
+                <button class="btn-secondary" id="upgradeBtn">
+                    <i class="fas fa-crown"></i> ترقية الخطة
+                </button>
+            </div>
+            
+            <div class="api-key-section">
+                <h3>🔑 مفتاح API الخاص بك</h3>
+                <div class="api-key-box">
+                    <code id="apiKey">sk_live_xxxxxxxxxxxxxxxx</code>
+                    <button class="btn-copy" onclick="copyApiKey()">📋 نسخ</button>
+                </div>
+                <p class="api-note">استخدم هذا المفتاح في بوتاتك للوصول إلى API</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let userData = null
+        
+        // التحقق من التوكن
+        async function checkAuth() {
+            const token = localStorage.getItem('token')
+            if (!token) {
+                window.location.href = 'login.html'
+                return
+            }
+            
+            const response = await fetch('/api/auth?action=verify', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            
+            const data = await response.json()
+            
+            if (!data.success) {
+                localStorage.removeItem('token')
+                localStorage.removeItem('user')
+                window.location.href = 'login.html'
+                return
+            }
+            
+            userData = data.user
+            displayUserInfo(userData)
+        }
+        
+        function displayUserInfo(user) {
+            document.getElementById('userName').innerText = `مرحباً، ${user.name}`
+            document.getElementById('userEmail').innerText = user.email
+            document.getElementById('userPlan').innerText = user.plan?.toUpperCase() || 'FREE'
+            document.getElementById('userAvatar').innerHTML = user.name?.charAt(0) || '👤'
+        }
+        
+        function copyApiKey() {
+            const apiKey = document.getElementById('apiKey').innerText
+            navigator.clipboard.writeText(apiKey)
+            alert('✅ تم نسخ مفتاح API')
+        }
+        
+        document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
+            e.preventDefault()
+            localStorage.removeItem('token')
+            localStorage.removeItem('user')
+            window.location.href = 'index.html'
+        })
+        
+        // معالجة GitHub callback
+        const urlParams = new URLSearchParams(window.location.search)
+        const token = urlParams.get('token')
+        const name = urlParams.get('name')
+        const email = urlParams.get('email')
+        const avatar = urlParams.get('avatar')
+        
+        if (token && name) {
+            localStorage.setItem('token', token)
+            localStorage.setItem('user', JSON.stringify({ name, email, plan: 'free' }))
+            window.history.replaceState({}, document.title, '/dashboard.html')
+            location.reload()
+        }
+        
+        checkAuth()
+    </script>
+    
+    <style>
+        .dashboard-container {
+            max-width: 1000px;
+            margin: 100px auto 2rem;
+            padding: 2rem;
+        }
+        
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid var(--gray);
+        }
+        
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray);
+        }
+        
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), #00ff88);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .plan-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+        
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--dark);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid var(--gray);
+        }
+        
+        .stat-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+        
+        .dashboard-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .api-key-section {
+            background: var(--dark);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .api-key-box {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .api-key-box code {
+            background: #0f1117;
+            padding: 0.8rem;
+            border-radius: 8px;
+            flex: 1;
+            font-family: monospace;
+        }
+        
+        .btn-copy {
+            background: var(--gray);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .api-note {
+            font-size: 0.8rem;
+            color: #a1a1aa;
+        }
+    </style>
+</body>
+</html>
