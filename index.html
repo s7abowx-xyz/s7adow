@@ -106,6 +106,7 @@
         .file-item .info { flex: 1; min-width: 0; }
         .file-item .info .name { font-weight: 500; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .file-item .info .size { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
+        .file-item .info .service-tag { font-size: 0.6rem; background: rgba(0,255,204,0.1); padding: 1px 8px; border-radius: 10px; color: #00ffcc; }
         .file-item .actions { display: flex; gap: 6px; }
         .file-item .actions button {
             background: rgba(0,255,204,0.08); border: 1px solid rgba(0,255,204,0.15);
@@ -124,7 +125,8 @@
 
         /* API */
         .api-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .api-card { background: rgba(0,0,0,0.4); border-radius: 12px; padding: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        .api-card { background: rgba(0,0,0,0.4); border-radius: 12px; padding: 15px; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .api-card:hover { border-color: rgba(0,255,204,0.2); }
         .api-card .method { display: inline-block; padding: 2px 12px; border-radius: 20px; font-size: 0.6rem; font-weight: bold; margin-bottom: 6px; }
         .api-card .method.post { background: rgba(0,255,204,0.15); color: #00ffcc; }
         .api-card .endpoint { font-family: monospace; font-size: 0.75rem; color: rgba(255,255,255,0.7); word-break: break-all; }
@@ -230,15 +232,16 @@
 <script>
     // ====== البيانات ======
     const SERVICES = {
-        telegraph: { name: 'Telegraph', desc: 'صور فقط · دائم' },
-        catbox: { name: 'Catbox', desc: 'جميع الملفات · 50MB · دائم' },
-        imgbb: { name: 'ImgBB', desc: 'صور فقط · دائم' },
-        fileio: { name: 'File.io', desc: 'جميع الملفات · مؤقت' },
-        anonfiles: { name: 'AnonFiles', desc: 'جميع الملفات · 20GB · دائم' }
+        telegraph: { name: 'Telegraph', desc: 'صور فقط · دائم', type: 'image' },
+        catbox: { name: 'Catbox', desc: 'جميع الملفات · 50MB · دائم', type: 'all' },
+        imgbb: { name: 'ImgBB', desc: 'صور فقط · دائم', type: 'image' },
+        fileio: { name: 'File.io', desc: 'جميع الملفات · مؤقت', type: 'all' },
+        anonfiles: { name: 'AnonFiles', desc: 'جميع الملفات · 20GB · دائم', type: 'all' }
     };
 
     let selectedService = 'telegraph';
     const uploadedFiles = [];
+    let fileCounter = 0;
 
     function selectService(service) {
         selectedService = service;
@@ -264,7 +267,7 @@
     document.getElementById('closeMenu').addEventListener('click', closeMenu);
     document.getElementById('overlay').addEventListener('click', closeMenu);
 
-    // ====== تحويل الملف إلى Base64 (بدون API) ======
+    // ====== رفع الملفات (محلياً + معاينة) ======
     function fileToBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -274,7 +277,15 @@
         });
     }
 
-    // ====== رفع الملفات (محلياً) ======
+    function getFileIcon(type) {
+        if (type.startsWith('image/')) return '🖼️';
+        if (type.startsWith('video/')) return '🎬';
+        if (type.startsWith('audio/')) return '🎵';
+        if (type.includes('pdf')) return '📄';
+        if (type.includes('zip') || type.includes('rar')) return '📦';
+        return '📁';
+    }
+
     async function uploadFiles(files) {
         const status = document.getElementById('status');
         const progressBar = document.getElementById('progressBar');
@@ -282,6 +293,8 @@
 
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
+            const fileId = ++fileCounter;
+            
             status.className = 'status info';
             status.textContent = `⏳ جاري تحميل ${file.name}...`;
             progressBar.style.display = 'block';
@@ -293,15 +306,17 @@
                 
                 // تخزين الملف محلياً
                 uploadedFiles.push({
+                    id: fileId,
                     name: file.name,
                     size: file.size,
                     type: file.type,
                     url: base64,
-                    service: selectedService
+                    service: selectedService,
+                    icon: getFileIcon(file.type)
                 });
 
                 status.className = 'status success';
-                status.textContent = `✅ ${file.name} تم تحميله محلياً`;
+                status.textContent = `✅ ${file.name} تم تحميله عبر ${SERVICES[selectedService].name}`;
 
             } catch (error) {
                 status.className = 'status error';
@@ -320,14 +335,18 @@
             return;
         }
 
-        list.innerHTML = uploadedFiles.map((file, index) => `
+        list.innerHTML = uploadedFiles.map((file) => `
             <div class="file-item">
                 <div class="info">
-                    <div class="name">${file.name}</div>
-                    <div class="size">${(file.size / 1024).toFixed(1)} KB • ${SERVICES[file.service]?.name || file.service}</div>
+                    <div class="name">
+                        ${file.icon} ${file.name}
+                        <span class="service-tag">${SERVICES[file.service]?.name || file.service}</span>
+                    </div>
+                    <div class="size">${(file.size / 1024).toFixed(1)} KB</div>
                 </div>
                 <div class="actions">
                     <button onclick="copyLink('${file.url}')"><i class="fas fa-copy"></i></button>
+                    <button onclick="previewFile('${file.url}', '${file.type}')"><i class="fas fa-eye"></i></button>
                     <button onclick="window.open('${file.url}', '_blank')"><i class="fas fa-external-link-alt"></i></button>
                 </div>
             </div>
@@ -337,6 +356,15 @@
     function copyLink(url) {
         navigator.clipboard.writeText(url);
         alert('✅ تم نسخ الرابط:\n' + url);
+    }
+
+    function previewFile(url, type) {
+        if (type.startsWith('image/')) {
+            const win = window.open('', '_blank');
+            win.document.write(`<html><body style="margin:0;background:#0a0a0a;display:flex;justify-content:center;align-items:center;height:100vh;"><img src="${url}" style="max-width:90%;max-height:90%;border-radius:10px;"></body></html>`);
+        } else {
+            window.open(url, '_blank');
+        }
     }
 
     // ====== أحداث السحب والإفلات ======
