@@ -21,7 +21,7 @@
             width: 100%;
             height: 100%;
             background: url('https://cdn.dix.lat/me/a0ce9f65-ef12-416a-a538-51c84190300b.jpg') center center / cover no-repeat;
-            opacity: 0.2;
+            opacity: 0.15;
             z-index: -1;
         }
         .container { max-width: 900px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
@@ -33,14 +33,14 @@
             background: rgba(0,0,0,0.75); backdrop-filter: blur(15px);
             border-radius: 20px; padding: 25px;
             border: 1px solid rgba(0,255,204,0.1);
-            margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
         .card-title { font-size: 1.1rem; margin-bottom: 15px; color: #00ffcc; display: flex; align-items: center; gap: 10px; }
 
         .upload-area {
             border: 2px dashed rgba(0,255,204,0.25); border-radius: 16px;
-            padding: 50px 20px; text-align: center; cursor: pointer;
-            transition: 0.3s; position: relative;
+            padding: 50px 20px; text-align: center; cursor: pointer; transition: 0.3s; position: relative;
         }
         .upload-area:hover, .upload-area.dragover { border-color: #00ffcc; background: rgba(0,255,204,0.05); }
         .upload-area i { font-size: 4rem; color: #00ffcc; margin-bottom: 15px; }
@@ -48,7 +48,7 @@
         .upload-area p { color: rgba(255,255,255,0.4); font-size: 0.9rem; }
         .upload-area input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 
-        .file-list { margin-top: 15px; }
+        .file-list { margin-top: 15px; max-height: 400px; overflow-y: auto; }
         .file-item {
             background: rgba(255,255,255,0.03); border-radius: 12px;
             padding: 12px 15px; margin-bottom: 8px;
@@ -112,7 +112,7 @@
 
     <!-- الملفات المرفوعة -->
     <div class="card">
-        <div class="card-title"><i class="fas fa-list"></i> الملفات المرفوعة</div>
+        <div class="card-title"><i class="fas fa-list"></i> الملفات المرفوعة <span id="fileCount" style="font-size:0.7rem; color:rgba(255,255,255,0.4);"></span></div>
         <div class="file-list" id="fileList">
             <p style="color: rgba(255,255,255,0.3); text-align: center;">لا توجد ملفات مرفوعة بعد</p>
         </div>
@@ -120,7 +120,7 @@
 
     <!-- API Section -->
     <div class="card">
-        <div class="card-title"><i class="fas fa-code"></i> Shadow API <span style="font-size:0.6rem; background:rgba(0,255,204,0.1); padding:2px 10px; border-radius:20px; color:#00ffcc;">v1.0</span></div>
+        <div class="card-title"><i class="fas fa-code"></i> Shadow API <span style="font-size:0.6rem; background:rgba(0,255,204,0.1); padding:2px 10px; border-radius:20px; color:#00ffcc;">v2.0</span></div>
         <p style="color: rgba(255,255,255,0.5); font-size:0.85rem; margin-bottom:15px;">استخدم الـ API لرفع الملفات من بوتات واتساب وتيليجرام</p>
 
         <div class="api-grid">
@@ -147,43 +147,66 @@
         </div>
     </div>
 
-    <div class="footer"><p>🕷️ Shadow Upload · روابط مباشرة · تخزين محلي</p></div>
+    <div class="footer"><p>🕷️ Shadow Upload · روابط مباشرة · تخزين محلي (IndexedDB)</p></div>
 
 </div>
 
 <script>
-    // ====== تخزين الملفات المحلي (بدون خادم) ======
-    let uploadedFiles = [];
-    let fileCounter = 0;
+    // ====== IndexedDB لتخزين الملفات ======
+    const DB_NAME = 'ShadowUploadDB';
+    const STORE_NAME = 'files';
+    let db = null;
 
-    // تحميل الملفات المحفوظة
-    function loadSavedFiles() {
-        try {
-            const saved = localStorage.getItem('shadowUploadFiles');
-            if (saved) {
-                uploadedFiles = JSON.parse(saved);
-                fileCounter = uploadedFiles.length;
-                renderFiles();
-            }
-        } catch(e) {}
-    }
-
-    // حفظ الملفات
-    function saveFiles() {
-        try {
-            localStorage.setItem('shadowUploadFiles', JSON.stringify(uploadedFiles));
-        } catch(e) {}
-    }
-
-    // تحويل الملف إلى Base64
-    function fileToBase64(file) {
+    function openDB() {
         return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
+            const request = indexedDB.open(DB_NAME, 1);
+            request.onupgradeneeded = (event) => {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains(STORE_NAME)) {
+                    db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+                }
+            };
+            request.onsuccess = (event) => resolve(event.target.result);
+            request.onerror = (event) => reject(event.target.error);
         });
     }
+
+    function getAllFiles() {
+        return new Promise((resolve, reject) => {
+            if (!db) return resolve([]);
+            const tx = db.transaction(STORE_NAME, 'readonly');
+            const store = tx.objectStore(STORE_NAME);
+            const request = store.getAll();
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => resolve([]);
+        });
+    }
+
+    function saveFile(fileData) {
+        return new Promise((resolve, reject) => {
+            if (!db) return reject('DB not open');
+            const tx = db.transaction(STORE_NAME, 'readwrite');
+            const store = tx.objectStore(STORE_NAME);
+            const request = store.put(fileData);
+            request.onsuccess = () => resolve(fileData);
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    function deleteFile(id) {
+        return new Promise((resolve, reject) => {
+            if (!db) return reject('DB not open');
+            const tx = db.transaction(STORE_NAME, 'readwrite');
+            const store = tx.objectStore(STORE_NAME);
+            const request = store.delete(id);
+            request.onsuccess = () => resolve();
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    // ====== وظائف الموقع ======
+    let uploadedFiles = [];
+    let fileCounter = 0;
 
     function getFileIcon(type, name) {
         if (type?.startsWith('image/')) return '🖼️';
@@ -194,19 +217,19 @@
         return '📁';
     }
 
-    function getFileType(name) {
-        const ext = name.split('.').pop().toLowerCase();
-        const types = {
-            'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png',
-            'gif': 'image/gif', 'svg': 'image/svg+xml', 'webp': 'image/webp',
-            'mp4': 'video/mp4', 'webm': 'video/webm', 'avi': 'video/x-msvideo',
-            'mp3': 'audio/mpeg', 'wav': 'audio/wav', 'ogg': 'audio/ogg',
-            'pdf': 'application/pdf', 'txt': 'text/plain',
-            'js': 'application/javascript', 'html': 'text/html',
-            'css': 'text/css', 'json': 'application/json',
-            'zip': 'application/zip', 'rar': 'application/x-rar-compressed'
-        };
-        return types[ext] || 'application/octet-stream';
+    function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = () => reject(reader.error);
+        });
     }
 
     // ====== رفع الملفات ======
@@ -225,25 +248,26 @@
             try {
                 const base64 = await fileToBase64(file);
                 const fileId = ++fileCounter;
-                const fileType = file.type || getFileType(file.name);
 
-                uploadedFiles.push({
+                const fileData = {
                     id: fileId,
                     name: file.name,
                     size: file.size,
-                    type: fileType,
+                    type: file.type || 'application/octet-stream',
                     url: base64,
-                    icon: getFileIcon(fileType, file.name),
+                    icon: getFileIcon(file.type, file.name),
                     uploadedAt: new Date().toISOString()
-                });
+                };
 
-                saveFiles();
+                await saveFile(fileData);
+                uploadedFiles.push(fileData);
+
                 status.className = 'status success';
-                status.textContent = `✅ ${file.name} تم رفعه بنجاح`;
+                status.textContent = `✅ ${file.name} تم رفعه بنجاح (${formatFileSize(file.size)})`;
 
             } catch (error) {
                 status.className = 'status error';
-                status.textContent = `❌ خطأ: ${error.message}`;
+                status.textContent = `❌ خطأ: ${error.message || 'فشل الرفع'}`;
             }
         }
 
@@ -253,6 +277,10 @@
 
     function renderFiles() {
         const list = document.getElementById('fileList');
+        const count = document.getElementById('fileCount');
+
+        count.textContent = uploadedFiles.length ? `(${uploadedFiles.length})` : '';
+
         if (uploadedFiles.length === 0) {
             list.innerHTML = '<p style="color: rgba(255,255,255,0.3); text-align: center;">لا توجد ملفات مرفوعة بعد</p>';
             return;
@@ -262,12 +290,12 @@
             <div class="file-item">
                 <div class="info">
                     <div class="name">${file.icon} ${file.name}</div>
-                    <div class="size">${(file.size / 1024).toFixed(1)} KB • ${new Date(file.uploadedAt).toLocaleTimeString()}</div>
+                    <div class="size">${formatFileSize(file.size)} • ${new Date(file.uploadedAt).toLocaleTimeString()}</div>
                 </div>
                 <div class="actions">
                     <button onclick="copyLink('${file.url}')"><i class="fas fa-copy"></i></button>
                     <button onclick="previewFile('${file.url}', '${file.type}')"><i class="fas fa-eye"></i></button>
-                    <button onclick="deleteFile(${file.id})"><i class="fas fa-trash" style="color:#ff4757;"></i></button>
+                    <button onclick="removeFile(${file.id})"><i class="fas fa-trash" style="color:#ff4757;"></i></button>
                 </div>
             </div>
         `).join('');
@@ -288,11 +316,16 @@
         }
     }
 
-    function deleteFile(id) {
+    async function removeFile(id) {
         if (!confirm('هل تريد حذف هذا الملف؟')) return;
-        uploadedFiles = uploadedFiles.filter(f => f.id !== id);
-        saveFiles();
-        renderFiles();
+        try {
+            await deleteFile(id);
+            uploadedFiles = uploadedFiles.filter(f => f.id !== id);
+            renderFiles();
+            alert('✅ تم حذف الملف');
+        } catch (error) {
+            alert('❌ فشل الحذف: ' + error.message);
+        }
     }
 
     // ====== أحداث السحب والإفلات ======
@@ -315,8 +348,22 @@
     });
 
     // ====== تهيئة ======
-    loadSavedFiles();
-    console.log('🕷️ Shadow Upload v1.0 loaded');
+    async function init() {
+        try {
+            db = await openDB();
+            uploadedFiles = await getAllFiles();
+            if (uploadedFiles.length > 0) {
+                fileCounter = Math.max(...uploadedFiles.map(f => f.id), 0);
+            }
+            renderFiles();
+            console.log(`🕷️ Shadow Upload v2.0 loaded (${uploadedFiles.length} files)`);
+        } catch (error) {
+            console.error('DB init error:', error);
+            document.getElementById('fileList').innerHTML = '<p style="color: #ff4757;">⚠️ فشل تحميل قاعدة البيانات</p>';
+        }
+    }
+
+    init();
 </script>
 
 </body>
