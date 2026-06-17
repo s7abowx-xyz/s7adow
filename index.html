@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shadow Upload Pro - رفع الملفات</title>
+    <title>Shadow Upload - رفع الملفات</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,57 +24,11 @@
             opacity: 0.2;
             z-index: -1;
         }
-        .container { max-width: 1100px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
         .header { text-align: center; padding: 30px 0 20px; }
         .header h1 { font-size: 2.5rem; background: linear-gradient(135deg, #00ffcc, #ff4757); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .header p { color: rgba(255,255,255,0.6); font-size: 1rem; }
 
-        /* زر الثلاث شرط */
-        .menu-toggle {
-            position: fixed; top: 20px; right: 20px; z-index: 999;
-            background: rgba(0,0,0,0.8); border: 2px solid rgba(0,255,204,0.3);
-            border-radius: 12px; padding: 12px 14px; cursor: pointer;
-            transition: 0.3s; color: #00ffcc; font-size: 1.5rem;
-            backdrop-filter: blur(10px);
-        }
-        .menu-toggle:hover { border-color: #00ffcc; box-shadow: 0 0 20px rgba(0,255,204,0.2); }
-
-        /* القائمة الجانبية */
-        .side-menu {
-            position: fixed; top: 0; right: -420px; width: 400px; height: 100vh;
-            background: rgba(10,10,10,0.97); backdrop-filter: blur(20px);
-            border-left: 1px solid rgba(0,255,204,0.15); z-index: 1000;
-            transition: 0.4s cubic-bezier(0.4,0,0.2,1);
-            padding: 30px 25px; overflow-y: auto;
-            box-shadow: -10px 0 40px rgba(0,0,0,0.5);
-        }
-        .side-menu.open { right: 0; }
-        .side-menu .close-btn { position: absolute; top: 15px; left: 20px; font-size: 1.8rem; color: rgba(255,255,255,0.5); cursor: pointer; }
-        .side-menu .close-btn:hover { color: #ff4757; }
-        .side-menu .menu-title { font-size: 1.5rem; color: #00ffcc; margin: 30px 0 20px; text-align: center; }
-
-        .menu-section { margin-bottom: 20px; }
-        .menu-section .section-title { color: rgba(255,255,255,0.4); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-
-        .menu-item {
-            display: flex; align-items: center; gap: 15px; padding: 12px 16px;
-            border-radius: 12px; cursor: pointer; transition: 0.3s;
-            margin-bottom: 4px; border: 1px solid transparent;
-        }
-        .menu-item:hover { background: rgba(0,255,204,0.05); border-color: rgba(0,255,204,0.1); }
-        .menu-item.active { background: rgba(0,255,204,0.1); border-color: rgba(0,255,204,0.3); }
-        .menu-item .icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
-        .menu-item .icon.green { background: rgba(0,255,204,0.15); color: #00ffcc; }
-        .menu-item .icon.pink { background: rgba(255,71,87,0.15); color: #ff4757; }
-        .menu-item .icon.blue { background: rgba(0,150,255,0.15); color: #0096ff; }
-        .menu-item .icon.orange { background: rgba(255,150,0,0.15); color: #ff9600; }
-        .menu-item .icon.purple { background: rgba(150,50,255,0.15); color: #9632ff; }
-        .menu-item .info { flex: 1; }
-        .menu-item .info .name { font-size: 0.9rem; font-weight: 500; }
-        .menu-item .info .desc { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
-        .menu-item .badge { background: rgba(0,255,204,0.15); color: #00ffcc; padding: 2px 10px; border-radius: 20px; font-size: 0.6rem; }
-
-        /* بطاقات */
         .card {
             background: rgba(0,0,0,0.75); backdrop-filter: blur(15px);
             border-radius: 20px; padding: 25px;
@@ -83,19 +37,17 @@
         }
         .card-title { font-size: 1.1rem; margin-bottom: 15px; color: #00ffcc; display: flex; align-items: center; gap: 10px; }
 
-        /* منطقة الرفع */
         .upload-area {
             border: 2px dashed rgba(0,255,204,0.25); border-radius: 16px;
-            padding: 40px 20px; text-align: center; cursor: pointer;
+            padding: 50px 20px; text-align: center; cursor: pointer;
             transition: 0.3s; position: relative;
         }
         .upload-area:hover, .upload-area.dragover { border-color: #00ffcc; background: rgba(0,255,204,0.05); }
-        .upload-area i { font-size: 3rem; color: #00ffcc; margin-bottom: 10px; }
-        .upload-area h3 { font-size: 1rem; margin-bottom: 4px; }
-        .upload-area p { color: rgba(255,255,255,0.4); font-size: 0.8rem; }
+        .upload-area i { font-size: 4rem; color: #00ffcc; margin-bottom: 15px; }
+        .upload-area h3 { font-size: 1.2rem; margin-bottom: 5px; }
+        .upload-area p { color: rgba(255,255,255,0.4); font-size: 0.9rem; }
         .upload-area input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 
-        /* قائمة الملفات */
         .file-list { margin-top: 15px; }
         .file-item {
             background: rgba(255,255,255,0.03); border-radius: 12px;
@@ -103,15 +55,15 @@
             display: flex; justify-content: space-between; align-items: center;
             border: 1px solid rgba(255,255,255,0.05);
         }
+        .file-item:hover { border-color: rgba(0,255,204,0.2); }
         .file-item .info { flex: 1; min-width: 0; }
-        .file-item .info .name { font-weight: 500; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .file-item .info .size { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
-        .file-item .info .service-tag { font-size: 0.6rem; background: rgba(0,255,204,0.1); padding: 1px 8px; border-radius: 10px; color: #00ffcc; }
+        .file-item .info .name { font-weight: 500; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .file-item .info .size { font-size: 0.75rem; color: rgba(255,255,255,0.4); }
         .file-item .actions { display: flex; gap: 6px; }
         .file-item .actions button {
             background: rgba(0,255,204,0.08); border: 1px solid rgba(0,255,204,0.15);
-            border-radius: 6px; padding: 4px 10px; color: #00ffcc;
-            cursor: pointer; font-size: 0.7rem; transition: 0.3s;
+            border-radius: 6px; padding: 5px 12px; color: #00ffcc;
+            cursor: pointer; font-size: 0.75rem; transition: 0.3s;
         }
         .file-item .actions button:hover { background: #00ffcc; color: #000; }
 
@@ -120,13 +72,12 @@
         .status.error { display: block; background: rgba(255,71,87,0.1); border: 1px solid #ff4757; color: #ff4757; }
         .status.info { display: block; background: rgba(0,150,255,0.1); border: 1px solid #0096ff; color: #0096ff; }
 
-        .progress-bar { width: 100%; height: 3px; background: rgba(255,255,255,0.05); border-radius: 2px; margin-top: 12px; overflow: hidden; display: none; }
+        .progress-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.05); border-radius: 2px; margin-top: 12px; overflow: hidden; display: none; }
         .progress-bar .fill { height: 100%; background: #00ffcc; width: 0%; transition: width 0.3s; }
 
-        /* API */
+        /* API Section */
         .api-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .api-card { background: rgba(0,0,0,0.4); border-radius: 12px; padding: 15px; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
-        .api-card:hover { border-color: rgba(0,255,204,0.2); }
+        .api-card { background: rgba(0,0,0,0.4); border-radius: 12px; padding: 15px; border: 1px solid rgba(255,255,255,0.05); }
         .api-card .method { display: inline-block; padding: 2px 12px; border-radius: 20px; font-size: 0.6rem; font-weight: bold; margin-bottom: 6px; }
         .api-card .method.post { background: rgba(0,255,204,0.15); color: #00ffcc; }
         .api-card .endpoint { font-family: monospace; font-size: 0.75rem; color: rgba(255,255,255,0.7); word-break: break-all; }
@@ -134,68 +85,25 @@
 
         .footer { text-align: center; padding: 20px; color: rgba(255,255,255,0.2); font-size: 0.75rem; border-top: 1px solid rgba(255,255,255,0.03); margin-top: 20px; }
 
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; backdrop-filter: blur(5px); }
-        .overlay.active { display: block; }
-
-        @media (max-width: 768px) { .side-menu { width: 100%; right: -100%; } .api-grid { grid-template-columns: 1fr; } .header h1 { font-size: 1.8rem; } }
+        @media (max-width: 768px) { .api-grid { grid-template-columns: 1fr; } .header h1 { font-size: 1.8rem; } }
     </style>
 </head>
 <body>
 
-<!-- زر الثلاث شرط -->
-<div class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></div>
-<div class="overlay" id="overlay"></div>
-
-<!-- القائمة الجانبية -->
-<div class="side-menu" id="sideMenu">
-    <div class="close-btn" id="closeMenu"><i class="fas fa-times"></i></div>
-    <div class="menu-title"><i class="fas fa-cloud-upload-alt"></i> Shadow Upload</div>
-
-    <div class="menu-section">
-        <div class="section-title"><i class="fas fa-server"></i> خدمات التخزين</div>
-        <div class="menu-item active" data-service="telegraph" onclick="selectService('telegraph')">
-            <div class="icon green"><i class="fas fa-feather"></i></div>
-            <div class="info"><div class="name">Telegraph</div><div class="desc">صور فقط · دائم</div></div>
-            <span class="badge">دائم</span>
-        </div>
-        <div class="menu-item" data-service="catbox" onclick="selectService('catbox')">
-            <div class="icon pink"><i class="fas fa-box"></i></div>
-            <div class="info"><div class="name">Catbox</div><div class="desc">جميع الملفات · 50MB · دائم</div></div>
-            <span class="badge">دائم</span>
-        </div>
-        <div class="menu-item" data-service="imgbb" onclick="selectService('imgbb')">
-            <div class="icon blue"><i class="fas fa-image"></i></div>
-            <div class="info"><div class="name">ImgBB</div><div class="desc">صور فقط · دائم</div></div>
-            <span class="badge">دائم</span>
-        </div>
-        <div class="menu-item" data-service="fileio" onclick="selectService('fileio')">
-            <div class="icon orange"><i class="fas fa-clock"></i></div>
-            <div class="info"><div class="name">File.io</div><div class="desc">جميع الملفات · مؤقت</div></div>
-            <span class="badge">مؤقت</span>
-        </div>
-        <div class="menu-item" data-service="anonfiles" onclick="selectService('anonfiles')">
-            <div class="icon purple"><i class="fas fa-folder-open"></i></div>
-            <div class="info"><div class="name">AnonFiles</div><div class="desc">جميع الملفات · 20GB · دائم</div></div>
-            <span class="badge">دائم</span>
-        </div>
-    </div>
-</div>
-
-<!-- ====== المحتوى الرئيسي ====== -->
 <div class="container">
 
     <div class="header">
-        <h1><i class="fas fa-cloud-upload-alt" style="color:#00ffcc;"></i> Shadow Upload Pro</h1>
-        <p>رفع الملفات لروابط دائمة – اختر الخدمة من القائمة ☰</p>
+        <h1><i class="fas fa-cloud-upload-alt" style="color:#00ffcc;"></i> Shadow Upload</h1>
+        <p>رفع الملفات والحصول على روابط مباشرة</p>
     </div>
 
-    <!-- Upload Card -->
+    <!-- رفع الملفات -->
     <div class="card">
-        <div class="card-title"><i class="fas fa-upload"></i> رفع الملفات <span id="serviceBadge" style="font-size:0.7rem; background:rgba(0,255,204,0.1); padding:2px 12px; border-radius:20px; color:#00ffcc;">Telegraph</span></div>
+        <div class="card-title"><i class="fas fa-upload"></i> رفع الملفات</div>
         <div class="upload-area" id="dropArea">
             <i class="fas fa-cloud-upload-alt"></i>
             <h3>اسحب الملف هنا أو اضغط للاختيار</h3>
-            <p id="uploadInfo">صور فقط · روابط دائمة</p>
+            <p>يدعم جميع أنواع الملفات (صور، فيديوهات، مستندات)</p>
             <input type="file" id="fileInput" multiple>
         </div>
         <div class="progress-bar" id="progressBar"><div class="fill" id="progressFill"></div></div>
@@ -206,68 +114,68 @@
     <div class="card">
         <div class="card-title"><i class="fas fa-list"></i> الملفات المرفوعة</div>
         <div class="file-list" id="fileList">
-            <p style="color: rgba(255,255,255,0.3); text-align: center; font-size:0.9rem;">لا توجد ملفات مرفوعة بعد</p>
+            <p style="color: rgba(255,255,255,0.3); text-align: center;">لا توجد ملفات مرفوعة بعد</p>
         </div>
     </div>
 
     <!-- API Section -->
     <div class="card">
-        <div class="card-title"><i class="fas fa-code"></i> Shadow API <span style="font-size:0.6rem; background:rgba(0,255,204,0.1); padding:2px 10px; border-radius:20px; color:#00ffcc;">v3.0</span></div>
-        <p style="color: rgba(255,255,255,0.5); font-size:0.85rem; margin-bottom:15px;">واجهة API خاصة لكل خدمة تخزين</p>
+        <div class="card-title"><i class="fas fa-code"></i> Shadow API <span style="font-size:0.6rem; background:rgba(0,255,204,0.1); padding:2px 10px; border-radius:20px; color:#00ffcc;">v1.0</span></div>
+        <p style="color: rgba(255,255,255,0.5); font-size:0.85rem; margin-bottom:15px;">استخدم الـ API لرفع الملفات من بوتات واتساب وتيليجرام</p>
 
         <div class="api-grid">
-            <div class="api-card"><span class="method post">POST</span><div class="endpoint">/api/upload/telegraph</div><div class="desc">رفع صور إلى Telegraph</div></div>
-            <div class="api-card"><span class="method post">POST</span><div class="endpoint">/api/upload/catbox</div><div class="desc">رفع أي ملف إلى Catbox</div></div>
-            <div class="api-card"><span class="method post">POST</span><div class="endpoint">/api/upload/imgbb</div><div class="desc">رفع صور إلى ImgBB</div></div>
-            <div class="api-card"><span class="method post">POST</span><div class="endpoint">/api/upload/fileio</div><div class="desc">رفع ملفات إلى File.io (مؤقت)</div></div>
-            <div class="api-card"><span class="method post">POST</span><div class="endpoint">/api/upload/anonfiles</div><div class="desc">رفع أي ملف إلى AnonFiles</div></div>
-            <div class="api-card"><span class="method get">GET</span><div class="endpoint">/api/services</div><div class="desc">قائمة الخدمات المتاحة</div></div>
+            <div class="api-card">
+                <span class="method post">POST</span>
+                <div class="endpoint">/api/upload</div>
+                <div class="desc">رفع أي ملف → multipart/form-data (field: "file")</div>
+            </div>
+            <div class="api-card">
+                <span class="method get">GET</span>
+                <div class="endpoint">/api/files</div>
+                <div class="desc">قائمة جميع الملفات المرفوعة</div>
+            </div>
+            <div class="api-card">
+                <span class="method get">GET</span>
+                <div class="endpoint">/api/files/:id</div>
+                <div class="desc">جلب رابط ملف معين</div>
+            </div>
+            <div class="api-card">
+                <span class="method delete">DELETE</span>
+                <div class="endpoint">/api/files/:id</div>
+                <div class="desc">حذف ملف من الخادم</div>
+            </div>
         </div>
     </div>
 
-    <div class="footer"><p>🕷️ Shadow Upload Pro · 5 خدمات تخزين · روابط دائمة</p></div>
+    <div class="footer"><p>🕷️ Shadow Upload · روابط مباشرة · تخزين محلي</p></div>
 
 </div>
 
 <script>
-    // ====== البيانات ======
-    const SERVICES = {
-        telegraph: { name: 'Telegraph', desc: 'صور فقط · دائم', type: 'image' },
-        catbox: { name: 'Catbox', desc: 'جميع الملفات · 50MB · دائم', type: 'all' },
-        imgbb: { name: 'ImgBB', desc: 'صور فقط · دائم', type: 'image' },
-        fileio: { name: 'File.io', desc: 'جميع الملفات · مؤقت', type: 'all' },
-        anonfiles: { name: 'AnonFiles', desc: 'جميع الملفات · 20GB · دائم', type: 'all' }
-    };
-
-    let selectedService = 'telegraph';
-    const uploadedFiles = [];
+    // ====== تخزين الملفات المحلي (بدون خادم) ======
+    let uploadedFiles = [];
     let fileCounter = 0;
 
-    function selectService(service) {
-        selectedService = service;
-        document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
-        document.querySelector(`.menu-item[data-service="${service}"]`)?.classList.add('active');
-
-        const info = SERVICES[service];
-        document.getElementById('serviceBadge').textContent = info.name;
-        document.getElementById('uploadInfo').textContent = info.desc;
-        closeMenu();
+    // تحميل الملفات المحفوظة
+    function loadSavedFiles() {
+        try {
+            const saved = localStorage.getItem('shadowUploadFiles');
+            if (saved) {
+                uploadedFiles = JSON.parse(saved);
+                fileCounter = uploadedFiles.length;
+                renderFiles();
+            }
+        } catch(e) {}
     }
 
-    // ====== القائمة ======
-    function toggleMenu() {
-        document.getElementById('sideMenu').classList.toggle('open');
-        document.getElementById('overlay').classList.toggle('active');
+    // حفظ الملفات
+    function saveFiles() {
+        try {
+            localStorage.setItem('shadowUploadFiles', JSON.stringify(uploadedFiles));
+        } catch(e) {}
     }
-    function closeMenu() {
-        document.getElementById('sideMenu').classList.remove('open');
-        document.getElementById('overlay').classList.remove('active');
-    }
-    document.getElementById('menuToggle').addEventListener('click', toggleMenu);
-    document.getElementById('closeMenu').addEventListener('click', closeMenu);
-    document.getElementById('overlay').addEventListener('click', closeMenu);
 
-    // ====== رفع الملفات (محلياً + معاينة) ======
+    // تحويل الملف إلى Base64
     function fileToBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -277,15 +185,31 @@
         });
     }
 
-    function getFileIcon(type) {
-        if (type.startsWith('image/')) return '🖼️';
-        if (type.startsWith('video/')) return '🎬';
-        if (type.startsWith('audio/')) return '🎵';
-        if (type.includes('pdf')) return '📄';
-        if (type.includes('zip') || type.includes('rar')) return '📦';
+    function getFileIcon(type, name) {
+        if (type?.startsWith('image/')) return '🖼️';
+        if (type?.startsWith('video/')) return '🎬';
+        if (type?.startsWith('audio/')) return '🎵';
+        if (name?.endsWith('.pdf')) return '📄';
+        if (name?.match(/\.(zip|rar|7z|tar|gz)$/)) return '📦';
         return '📁';
     }
 
+    function getFileType(name) {
+        const ext = name.split('.').pop().toLowerCase();
+        const types = {
+            'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png',
+            'gif': 'image/gif', 'svg': 'image/svg+xml', 'webp': 'image/webp',
+            'mp4': 'video/mp4', 'webm': 'video/webm', 'avi': 'video/x-msvideo',
+            'mp3': 'audio/mpeg', 'wav': 'audio/wav', 'ogg': 'audio/ogg',
+            'pdf': 'application/pdf', 'txt': 'text/plain',
+            'js': 'application/javascript', 'html': 'text/html',
+            'css': 'text/css', 'json': 'application/json',
+            'zip': 'application/zip', 'rar': 'application/x-rar-compressed'
+        };
+        return types[ext] || 'application/octet-stream';
+    }
+
+    // ====== رفع الملفات ======
     async function uploadFiles(files) {
         const status = document.getElementById('status');
         const progressBar = document.getElementById('progressBar');
@@ -293,30 +217,29 @@
 
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
-            const fileId = ++fileCounter;
-            
             status.className = 'status info';
-            status.textContent = `⏳ جاري تحميل ${file.name}...`;
+            status.textContent = `⏳ جاري رفع ${file.name}...`;
             progressBar.style.display = 'block';
             progressFill.style.width = `${((i + 1) / files.length) * 100}%`;
 
             try {
-                // تحويل الملف إلى Base64
                 const base64 = await fileToBase64(file);
-                
-                // تخزين الملف محلياً
+                const fileId = ++fileCounter;
+                const fileType = file.type || getFileType(file.name);
+
                 uploadedFiles.push({
                     id: fileId,
                     name: file.name,
                     size: file.size,
-                    type: file.type,
+                    type: fileType,
                     url: base64,
-                    service: selectedService,
-                    icon: getFileIcon(file.type)
+                    icon: getFileIcon(fileType, file.name),
+                    uploadedAt: new Date().toISOString()
                 });
 
+                saveFiles();
                 status.className = 'status success';
-                status.textContent = `✅ ${file.name} تم تحميله عبر ${SERVICES[selectedService].name}`;
+                status.textContent = `✅ ${file.name} تم رفعه بنجاح`;
 
             } catch (error) {
                 status.className = 'status error';
@@ -331,40 +254,45 @@
     function renderFiles() {
         const list = document.getElementById('fileList');
         if (uploadedFiles.length === 0) {
-            list.innerHTML = '<p style="color: rgba(255,255,255,0.3); text-align: center; font-size:0.9rem;">لا توجد ملفات مرفوعة بعد</p>';
+            list.innerHTML = '<p style="color: rgba(255,255,255,0.3); text-align: center;">لا توجد ملفات مرفوعة بعد</p>';
             return;
         }
 
         list.innerHTML = uploadedFiles.map((file) => `
             <div class="file-item">
                 <div class="info">
-                    <div class="name">
-                        ${file.icon} ${file.name}
-                        <span class="service-tag">${SERVICES[file.service]?.name || file.service}</span>
-                    </div>
-                    <div class="size">${(file.size / 1024).toFixed(1)} KB</div>
+                    <div class="name">${file.icon} ${file.name}</div>
+                    <div class="size">${(file.size / 1024).toFixed(1)} KB • ${new Date(file.uploadedAt).toLocaleTimeString()}</div>
                 </div>
                 <div class="actions">
                     <button onclick="copyLink('${file.url}')"><i class="fas fa-copy"></i></button>
                     <button onclick="previewFile('${file.url}', '${file.type}')"><i class="fas fa-eye"></i></button>
-                    <button onclick="window.open('${file.url}', '_blank')"><i class="fas fa-external-link-alt"></i></button>
+                    <button onclick="deleteFile(${file.id})"><i class="fas fa-trash" style="color:#ff4757;"></i></button>
                 </div>
             </div>
         `).join('');
     }
 
+    // ====== دوال مساعدة ======
     function copyLink(url) {
         navigator.clipboard.writeText(url);
         alert('✅ تم نسخ الرابط:\n' + url);
     }
 
     function previewFile(url, type) {
-        if (type.startsWith('image/')) {
+        if (type?.startsWith('image/')) {
             const win = window.open('', '_blank');
             win.document.write(`<html><body style="margin:0;background:#0a0a0a;display:flex;justify-content:center;align-items:center;height:100vh;"><img src="${url}" style="max-width:90%;max-height:90%;border-radius:10px;"></body></html>`);
         } else {
             window.open(url, '_blank');
         }
+    }
+
+    function deleteFile(id) {
+        if (!confirm('هل تريد حذف هذا الملف؟')) return;
+        uploadedFiles = uploadedFiles.filter(f => f.id !== id);
+        saveFiles();
+        renderFiles();
     }
 
     // ====== أحداث السحب والإفلات ======
@@ -387,8 +315,8 @@
     });
 
     // ====== تهيئة ======
-    renderFiles();
-    console.log('🕷️ Shadow Upload Pro v3.0 loaded (محلي)');
+    loadSavedFiles();
+    console.log('🕷️ Shadow Upload v1.0 loaded');
 </script>
 
 </body>
